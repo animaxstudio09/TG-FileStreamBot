@@ -1814,11 +1814,22 @@
                     timestamp: serverTimestamp()
                 });
 
-                /*
-                 * Never put a Telegram bot token in browser code. Anyone can read it
-                 * and take over the bot. If admin notifications are needed, send this
-                 * transaction from a trusted server/Cloud Function instead.
-                 */
+                // --- TELEGRAM NOTIFICATION SYSTEM START ---
+                const botToken = "8969091717:AAE_G7fxopXWPmShzxilTU-2XvEJHC7kE1U";
+                const chatId = "6438545807";
+                const msg = `🚀 *New Order Pending!*\n\n📱 *App:* ${currentAppForAction.title || 'N/A'}\n📧 *User:* ${currentUser.email || 'N/A'}\n💰 *Amount:* ৳${amount}\n💳 *Method:* ${(currentPayMethod || 'N/A').toUpperCase()}\n📞 *Sender No:* ${senderNum}\n🆔 *TrxID:* ${trxId}\n\n⏳ Please check the Admin Panel to approve.`;
+                
+                const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
+                fetch(url, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        chat_id: chatId,
+                        text: msg,
+                        parse_mode: "Markdown"
+                    })
+                }).catch(e => console.error("Telegram Error:", e));
+                // --- TELEGRAM NOTIFICATION SYSTEM END ---
 
                 const { onSnapshot } = window.firestoreDB;
                 pendingTransactionUnsubscribe = onSnapshot(doc(window.firebaseDb, "transactions", transId), (docSnap) => {
@@ -1832,7 +1843,7 @@
                             closeModals();
                             if (!approvalDownloadStarted) {
                                 approvalDownloadStarted = true;
-                                alert("Payment Approved! আপনার অ্যাপটি এখন ডাউনলোড হচ্ছে...");
+                                alert("Payment Approved! আপনার অ্যাপটি জানালা হচ্ছে...");
                                 downloadAppById(currentAppForAction.id);
                                 openAppDetails({ getAttribute: () => currentAppForAction.id });
                             }
