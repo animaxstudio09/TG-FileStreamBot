@@ -332,6 +332,22 @@
             letter-spacing: 0.5px;
         }
 
+        .version-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            display: none;
+            z-index: 10;
+            color: #fff;
+            background: linear-gradient(135deg, #7c3aed, #4f46e5);
+            padding: 5px 9px;
+            border-radius: 999px;
+            font-size: 0.65rem;
+            font-weight: 800;
+            letter-spacing: 0.4px;
+            box-shadow: 0 5px 14px rgba(79, 70, 229, 0.3);
+        }
+
         .app-icon {
             width: 80px;
             height: 80px;
@@ -408,16 +424,35 @@
             gap: 30px;
             align-items: flex-start;
             margin-bottom: 40px;
-            background: var(--surface-color);
+            background:
+                radial-gradient(circle at 100% 0%, rgba(37, 99, 235, 0.18), transparent 35%),
+                linear-gradient(135deg, var(--surface-color), var(--bg-color));
             padding: 30px;
             border-radius: var(--radius-lg);
             box-shadow: var(--shadow-md);
             border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+        .details-header::after {
+            content: "";
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            right: -80px;
+            bottom: -100px;
+            background: rgba(16, 185, 129, 0.12);
+            pointer-events: none;
+        }
+        .details-icon-large {
+            position: relative;
+            z-index: 1;
         }
 
         .details-icon-large {
-            width: 140px;
-            height: 140px;
+            width: 150px;
+            height: 150px;
             border-radius: 25%;
             background: var(--bg-color);
             display: flex;
@@ -428,14 +463,71 @@
             box-shadow: var(--shadow-lg);
             object-fit: cover;
             flex-shrink: 0;
+            border: 1px solid rgba(255,255,255,0.35);
         }
 
         .details-info {
             flex-grow: 1;
+            position: relative;
+            z-index: 1;
         }
 
         .details-title { font-size: 2.2rem; font-weight: 700; margin-bottom: 8px; letter-spacing: -1px; }
         .details-dev { color: var(--primary-color); font-weight: 500; margin-bottom: 15px; font-size: 1.1rem; }
+        .details-kicker {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+            color: var(--text-secondary);
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.7px;
+            text-transform: uppercase;
+        }
+        .details-kicker span {
+            padding: 5px 9px;
+            border-radius: 999px;
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--primary-color);
+        }
+        .details-kicker .update-kicker {
+            color: #fff;
+            background: linear-gradient(135deg, #7c3aed, #4f46e5);
+        }
+        .details-price-card {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 0 0 22px;
+        }
+        .details-price-label {
+            color: var(--text-secondary);
+            font-size: 0.82rem;
+        }
+        .details-price-current {
+            color: var(--text-primary);
+            font-size: 1.35rem;
+            font-weight: 800;
+        }
+        .details-price-old {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            text-decoration: line-through;
+        }
+        .discount-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 9px;
+            border-radius: 999px;
+            color: #047857;
+            background: #d1fae5;
+            font-size: 0.72rem;
+            font-weight: 800;
+        }
 
         .details-stats {
             display: flex;
@@ -452,7 +544,7 @@
         .stat-label { font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px; }
         .stat-divider { width: 1px; background: var(--border-color); height: 40px; }
 
-        .details-actions { display: flex; gap: 15px; align-items: center; }
+        .details-actions { display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
         .btn-main-action {
             flex-grow: 1; max-width: 300px; font-size: 1.1rem; padding: 14px;
         }
@@ -495,6 +587,18 @@
             line-height: 1.7;
             color: var(--text-secondary);
             white-space: pre-line;
+        }
+        .app-description h3, .screenshots-section h3 {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+        .app-description h3::before, .screenshots-section h3::before {
+            content: "";
+            width: 4px;
+            height: 20px;
+            border-radius: 4px;
+            background: linear-gradient(180deg, var(--primary-color), var(--premium-color));
         }
 
         /* Similar Apps Grid (3 Rows, Play Store Style) */
@@ -595,6 +699,82 @@
         
         .history-item { display: flex; align-items: center; justify-content: space-between; padding: 12px; border-bottom: 1px solid var(--border-color); }
         .history-item-left { display: flex; align-items: center; gap: 15px; }
+
+        /* Premium profile experience */
+        .profile-card {
+            max-width: 760px;
+            background:
+                radial-gradient(circle at 100% 0%, rgba(37, 99, 235, 0.12), transparent 28%),
+                var(--surface-color);
+        }
+        .profile-identity {
+            padding: 26px 20px 22px;
+            border-radius: var(--radius-lg);
+            background: linear-gradient(135deg, rgba(37,99,235,0.08), rgba(16,185,129,0.08));
+            border: 1px solid var(--border-color);
+        }
+        .profile-stat-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin: 18px 0 24px;
+        }
+        .profile-stat {
+            padding: 15px 10px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            background: var(--surface-color);
+        }
+        .profile-stat strong { display: block; font-size: 1.35rem; color: var(--text-primary); }
+        .profile-stat span { color: var(--text-secondary); font-size: 0.75rem; }
+        .profile-quick-actions {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 0 0 25px;
+        }
+        .profile-quick-action {
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            background: var(--surface-color);
+            color: var(--text-primary);
+            padding: 12px 8px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.78rem;
+            transition: var(--transition);
+        }
+        .profile-quick-action i { display: block; color: var(--primary-color); font-size: 1.1rem; margin-bottom: 6px; }
+        .profile-quick-action:hover { border-color: var(--primary-color); transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+        .profile-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 8px;
+            color: var(--premium-color);
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+        .profile-status i { font-size: 0.65rem; }
+        .edit-profile-form { text-align: left; }
+        .edit-profile-form label { display: block; color: var(--text-secondary); font-size: 0.8rem; font-weight: 600; margin: 12px 0 5px; }
+        .edit-profile-form input { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-color); color: var(--text-primary); outline: none; }
+        .edit-profile-form input:focus { border-color: var(--primary-color); }
+
+        .download-cta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 18px 0 0;
+            padding: 12px 14px;
+            border: 1px solid rgba(37,99,235,0.2);
+            border-radius: var(--radius-md);
+            color: var(--text-secondary);
+            background: rgba(37,99,235,0.06);
+            font-size: 0.82rem;
+        }
+        .download-cta i { color: var(--primary-color); font-size: 1.1rem; }
         
         /* Modals */
         .custom-modal {
@@ -636,9 +816,11 @@
             .details-header { flex-direction: column; align-items: center; text-align: center; }
             .details-actions { flex-direction: column; width: 100%; }
             .btn-main-action { max-width: 100%; }
+            .details-price-card { justify-content: center; }
             .details-stats { justify-content: center; width: 100%; }
             .screenshot-img { height: 280px; }
             .profile-card { max-width: 100%; margin: 20px 0; }
+            .profile-stat-grid, .profile-quick-actions { gap: 8px; }
             .filter-bar h2 { margin-bottom: 10px; }
             .filter-bar { flex-direction: column; align-items: flex-start; }
             .filter-bar select { width: 100%; }
@@ -723,9 +905,9 @@
 
         <!-- ================= PROFILE VIEW ================= -->
         <section id="profile-view" class="view hidden">
-            <div class="profile-card" style="max-width: 600px;">
+            <div class="profile-card">
                 
-                <div style="text-align: center; margin-bottom: 25px;">
+                <div class="profile-identity" style="text-align: center; margin-bottom: 18px;">
                     <!-- PROFILE PICTURE UPLOAD AREA (AVATAR MODAL) -->
                     <div class="avatar-upload-wrapper" onclick="openAvatarSelection()">
                         <img id="profile-avatar-img" src="" style="display:none; width: 85px; height: 85px; border-radius: 50%; border: 2px solid var(--border-color); box-shadow: var(--shadow-sm); object-fit: cover; margin: 0 auto 10px auto;">
@@ -737,6 +919,19 @@
                     
                     <h2 id="profile-display-name" style="margin-bottom: 5px;">My Account</h2>
                     <p style="color: var(--text-secondary);" id="profile-email">Not logged in</p>
+                    <div class="profile-status"><i class="fa-solid fa-circle"></i> Account ready</div>
+                </div>
+
+                <div class="profile-stat-grid">
+                    <div class="profile-stat"><strong id="profile-purchase-count">0</strong><span>Purchases</span></div>
+                    <div class="profile-stat"><strong id="profile-download-count">0</strong><span>Downloads</span></div>
+                    <div class="profile-stat"><strong id="profile-favorite-count">0</strong><span>Favorites</span></div>
+                </div>
+
+                <div class="profile-quick-actions">
+                    <button class="profile-quick-action" type="button" onclick="switchProfileTab('purchases', this)"><i class="fa-solid fa-receipt"></i>Purchases</button>
+                    <button class="profile-quick-action" type="button" onclick="switchProfileTab('history', this)"><i class="fa-solid fa-download"></i>Downloads</button>
+                    <button class="profile-quick-action" type="button" onclick="switchProfileTab('favorites', this)"><i class="fa-solid fa-heart"></i>Favorites</button>
                 </div>
                 
                 <div class="profile-settings" style="margin-bottom: 25px;">
@@ -744,7 +939,7 @@
                         <span style="font-weight: 500;"><i class="fa-solid fa-palette" style="color: var(--primary-color); margin-right: 8px;"></i> Theme Appearance</span>
                         <button id="theme-toggle" class="btn-install" style="width: auto; padding: 6px 15px; font-size: 0.85rem;"><i class="fa-solid fa-moon"></i> Enable</button>
                     </div>
-                    <div class="setting-row" style="cursor: pointer;" onclick="alert('Profile edit feature coming soon!')">
+                    <div class="setting-row" style="cursor: pointer;" onclick="openEditProfileModal()">
                         <span style="font-weight: 500;"><i class="fa-solid fa-user-pen" style="color: var(--text-secondary); margin-right: 8px;"></i> Edit Profile</span>
                         <i class="fa-solid fa-chevron-right" style="color: var(--text-secondary); font-size: 0.9rem;"></i>
                     </div>
@@ -760,10 +955,10 @@
 
                 <!-- ADDED PURCHASES TAB FOR APP HISTORY -->
                 <div class="profile-tabs">
-                    <button class="profile-tab-btn active" onclick="switchProfileTab('purchases')">Purchases</button>
-                    <button class="profile-tab-btn" onclick="switchProfileTab('history')">Downloads</button>
-                    <button class="profile-tab-btn" onclick="switchProfileTab('favorites')">Favorites</button>
-                    <button class="profile-tab-btn" onclick="switchProfileTab('ratings')">My Ratings</button>
+                    <button class="profile-tab-btn active" onclick="switchProfileTab('purchases', this)">Purchases</button>
+                    <button class="profile-tab-btn" onclick="switchProfileTab('history', this)">Downloads</button>
+                    <button class="profile-tab-btn" onclick="switchProfileTab('favorites', this)">Favorites</button>
+                    <button class="profile-tab-btn" onclick="switchProfileTab('ratings', this)">My Ratings</button>
                 </div>
                 
                 <div id="tab-purchases" class="tab-content active">
@@ -884,7 +1079,11 @@
                         <h3 style="letter-spacing: 1px; margin: 0;" id="admin-pay-number">01600678966</h3>
                         <i class="fa-regular fa-copy" onclick="copyAdminNumber()" style="cursor: pointer; font-size: 1.2rem; padding: 5px;" title="Copy Number"></i>
                     </div>
-                    <p style="font-size: 1.1rem; margin-top: 10px; font-weight: bold;">Amount: <span id="pay-amount"></span></p>
+                    <p style="font-size: 1.1rem; margin-top: 10px; font-weight: bold;">
+                        Amount: <span id="pay-amount"></span>
+                        <span id="pay-amount-original" style="display:none; margin-left:6px; font-size:0.85rem; text-decoration:line-through; opacity:0.75;"></span>
+                    </p>
+                    <div id="pay-discount-note" style="display:none; margin-top:8px; font-size:0.8rem; font-weight:700;">Previous buyer discount applied</div>
                 </div>
                 
                 <div id="pay-inputs">
@@ -904,11 +1103,26 @@
         </div>
     </div>
 
+    <!-- EDIT PROFILE MODAL -->
+    <div id="edit-profile-modal" class="custom-modal">
+        <div class="modal-box edit-profile-form">
+            <span class="close-modal-btn" onclick="closeModals()">&times;</span>
+            <h3 style="margin-bottom: 8px;">Edit Profile</h3>
+            <p style="color:var(--text-secondary); font-size:0.85rem; margin-bottom:15px;">Keep your account details up to date.</p>
+            <label for="edit-name-input">Display name</label>
+            <input id="edit-name-input" type="text" maxlength="60" placeholder="Your name">
+            <label for="edit-email-input">Email</label>
+            <input id="edit-email-input" type="email" readonly>
+            <button class="btn-primary" style="width:100%; margin-top:18px;" onclick="saveProfileChanges()">Save changes</button>
+        </div>
+    </div>
+
     <!-- Template for App Cards -->
     <template id="app-card-template">
         <div class="app-card" onclick="openAppDetails(this)">
             <!-- Price Badge Element (Hidden initially) -->
             <div class="price-badge"></div>
+            <div class="version-badge"></div>
             <div class="app-icon placeholder-icon">
                 <i class="fa-solid fa-image"></i>
             </div>
@@ -936,6 +1150,11 @@
         let currentSelectedRating = 0; 
         let pendingTransactionUnsubscribe = null;
         let approvalDownloadStarted = false;
+        let currentAppPurchaseState = null;
+        let userEntitlements = {
+            downloads: new Map(),
+            purchases: new Map()
+        };
 
         // Default Avatars Array
         const defaultAvatars = [
@@ -966,6 +1185,130 @@
             themeBtn: document.getElementById('theme-toggle'),
             body: document.documentElement
         };
+
+        function getAppVersion(app) {
+            return String(
+                app?.version ??
+                app?.appVersion ??
+                app?.latestVersion ??
+                app?.currentVersion ??
+                app?.versionName ??
+                app?.app_version ??
+                ''
+            ).trim();
+        }
+
+        function getVersionParts(version) {
+            return String(version || '')
+                .trim()
+                .replace(/^v/i, '')
+                .split(/[.+_-]/)
+                .map(part => {
+                    const match = part.match(/\d+/);
+                    return match ? parseInt(match[0], 10) : part.toLowerCase();
+                });
+        }
+
+        function compareVersions(first, second) {
+            const a = getVersionParts(first);
+            const b = getVersionParts(second);
+            if (!a.length || !b.length || (!first && !second)) return 0;
+            const length = Math.max(a.length, b.length);
+            for (let i = 0; i < length; i++) {
+                const left = a[i] ?? 0;
+                const right = b[i] ?? 0;
+                if (typeof left === 'number' && typeof right === 'number') {
+                    if (left !== right) return left > right ? 1 : -1;
+                } else {
+                    const result = String(left).localeCompare(String(right), undefined, { numeric: true });
+                    if (result !== 0) return result > 0 ? 1 : -1;
+                }
+            }
+            return 0;
+        }
+
+        function getTimestampMillis(value) {
+            if (!value) return 0;
+            if (typeof value.toMillis === 'function') return value.toMillis();
+            if (value instanceof Date) return value.getTime();
+            if (typeof value === 'number') return value;
+            const parsed = Date.parse(value);
+            return Number.isNaN(parsed) ? 0 : parsed;
+        }
+
+        function getAppUpdatedMillis(app) {
+            return getTimestampMillis(
+                app?.updatedAt ||
+                app?.lastUpdatedAt ||
+                app?.modifiedAt ||
+                app?.versionUpdatedAt
+            );
+        }
+
+        function getAppPricing(app, purchaseState = currentAppPurchaseState) {
+            const originalPrice = Math.max(0, Number(app?.price || 150));
+            const discountApplied = app?.category === 'premium' &&
+                Boolean(purchaseState?.hasPreviousPurchase) &&
+                !Boolean(purchaseState?.hasCurrentPurchase);
+            const discountAmount = discountApplied ? Math.round(originalPrice * 0.20) : 0;
+            return {
+                originalPrice,
+                discountAmount,
+                finalPrice: Math.max(0, originalPrice - discountAmount),
+                discountApplied
+            };
+        }
+
+        function getUpdateBadgeText(app, downloadRecord) {
+            const currentVersion = getAppVersion(app);
+            const downloadedVersion = downloadRecord?.version || downloadRecord?.appVersion || '';
+            const fileChanged = Boolean(downloadRecord?.fileUrl && app?.fileUrl &&
+                downloadRecord.fileUrl !== app.fileUrl);
+            const hasOlderDownload = Boolean(currentVersion && downloadRecord &&
+                (!downloadedVersion || compareVersions(downloadedVersion, currentVersion) < 0)) || fileChanged;
+            if (hasOlderDownload) return 'UPDATE';
+            const explicitlyMarked = Boolean(
+                app?.isNewVersion ||
+                app?.newVersion ||
+                app?.updateAvailable ||
+                app?.showUpdateBadge
+            );
+            if (explicitlyMarked || (currentVersion && getAppUpdatedMillis(app))) return 'NEW VERSION';
+            return '';
+        }
+
+        async function refreshUserEntitlements() {
+            if (!currentUser) {
+                userEntitlements = { downloads: new Map(), purchases: new Map() };
+                return;
+            }
+            const { collection, getDocs, query, where } = window.firestoreDB;
+            const downloads = new Map();
+            const purchases = new Map();
+            try {
+                const downloadSnap = await getDocs(collection(window.firebaseDb, "users", currentUser.uid, "downloads"));
+                downloadSnap.forEach(item => downloads.set(item.id, item.data()));
+            } catch (error) {
+                console.error("Download entitlement error:", error);
+            }
+            try {
+                const transactionSnap = await getDocs(query(
+                    collection(window.firebaseDb, "transactions"),
+                    where("userId", "==", currentUser.uid)
+                ));
+                transactionSnap.forEach(item => {
+                    const data = item.data();
+                    if (data.status === 'approved' && data.appId) {
+                        if (!purchases.has(data.appId)) purchases.set(data.appId, []);
+                        purchases.get(data.appId).push(data);
+                    }
+                });
+            } catch (error) {
+                console.error("Purchase entitlement error:", error);
+            }
+            userEntitlements = { downloads, purchases };
+            if (appsData.length) applySorting();
+        }
 
         if(window.innerWidth <= 480) {
             document.querySelector('.mobile-header-wrapper').style.display = "flex";
@@ -1090,10 +1433,21 @@
 
                 const btn = clone.querySelector('.card-action-btn');
                 const priceBadge = clone.querySelector('.price-badge');
+                const versionBadge = clone.querySelector('.version-badge');
+                const versionBadgeText = getUpdateBadgeText(app, userEntitlements.downloads.get(app.id));
+                if (versionBadgeText) {
+                    versionBadge.textContent = versionBadgeText;
+                    versionBadge.style.display = 'block';
+                }
+                if (versionBadgeText === 'UPDATE') {
+                    btn.innerHTML = '<i class="fa-solid fa-arrows-rotate"></i> Update';
+                    btn.style.background = 'rgba(124, 58, 237, 0.1)';
+                    btn.style.color = '#7c3aed';
+                }
                 
                 if (app.category === 'premium') {
                     btn.classList.add('btn-premium');
-                    btn.textContent = 'Premium';
+                    if (versionBadgeText !== 'UPDATE') btn.textContent = 'Premium';
                     
                     if(app.price && parseInt(app.price) > 0) {
                         priceBadge.textContent = `৳${app.price}`;
@@ -1189,31 +1543,94 @@
                 : `<div class="details-icon-large"><i class="fa-solid fa-mobile-screen"></i></div>`;
 
             let actionBtnHTML = '';
-            let hasPurchased = false;
+            let purchaseState = {
+                hasApprovedPurchase: false,
+                hasCurrentPurchase: false,
+                hasPreviousPurchase: false,
+                hasDownloaded: userEntitlements.downloads.has(app.id),
+                needsUpdate: false,
+                currentVersion: getAppVersion(app),
+                downloadedVersion: userEntitlements.downloads.get(app.id)?.version ||
+                    userEntitlements.downloads.get(app.id)?.appVersion || '',
+                downloadedFileUrl: userEntitlements.downloads.get(app.id)?.fileUrl || ''
+            };
+            if (purchaseState.currentVersion && purchaseState.hasDownloaded) {
+                purchaseState.needsUpdate = !purchaseState.downloadedVersion ||
+                    compareVersions(purchaseState.downloadedVersion, purchaseState.currentVersion) < 0 ||
+                    Boolean(purchaseState.downloadedFileUrl && app.fileUrl &&
+                        purchaseState.downloadedFileUrl !== app.fileUrl);
+            }
             if (currentUser && app.category === 'premium') {
                 try {
                     const { collection, query, where, getDocs } = window.firestoreDB;
                     const q = query(collection(window.firebaseDb, "transactions"), 
                                     where("userId", "==", currentUser.uid), 
-                                    where("appId", "==", app.id),
-                                    where("status", "==", "approved"));
+                                    where("appId", "==", app.id));
                     const querySnapshot = await getDocs(q);
-                    if (!querySnapshot.empty) {
-                        hasPurchased = true;
+                    const approvedTransactions = [];
+                    querySnapshot.forEach(item => {
+                        if (item.data().status === 'approved') approvedTransactions.push(item.data());
+                    });
+                    purchaseState.hasApprovedPurchase = approvedTransactions.length > 0;
+
+                    const { doc, getDoc } = window.firestoreDB;
+                    const downloadSnap = await getDoc(doc(window.firebaseDb, "users", currentUser.uid, "downloads", app.id));
+                    const downloadRecord = downloadSnap.exists() ? downloadSnap.data() : null;
+                    purchaseState.hasDownloaded = Boolean(downloadRecord);
+                    purchaseState.downloadedVersion = downloadRecord?.version || downloadRecord?.appVersion || '';
+                    purchaseState.downloadedFileUrl = downloadRecord?.fileUrl || '';
+                    if (purchaseState.currentVersion && downloadRecord) {
+                        purchaseState.needsUpdate = !purchaseState.downloadedVersion ||
+                            compareVersions(purchaseState.downloadedVersion, purchaseState.currentVersion) < 0 ||
+                            Boolean(purchaseState.downloadedFileUrl && app.fileUrl &&
+                                purchaseState.downloadedFileUrl !== app.fileUrl);
+                    }
+
+                    approvedTransactions.forEach(transaction => {
+                        const purchasedVersion = transaction.appVersion || transaction.version || '';
+                        const transactionTime = getTimestampMillis(transaction.timestamp);
+                        const appUpdatedAt = getAppUpdatedMillis(app);
+                        const versionMatches = purchaseState.currentVersion &&
+                            purchasedVersion &&
+                            compareVersions(purchasedVersion, purchaseState.currentVersion) === 0;
+                        const transactionIsAfterUpdate = appUpdatedAt && transactionTime && transactionTime >= appUpdatedAt;
+                        if (!purchaseState.currentVersion || versionMatches || (!purchasedVersion && transactionIsAfterUpdate)) {
+                            purchaseState.hasCurrentPurchase = true;
+                        } else {
+                            purchaseState.hasPreviousPurchase = true;
+                        }
+                    });
+
+                    if (purchaseState.currentVersion && downloadRecord) {
+                        const downloadIsCurrent = purchaseState.downloadedVersion &&
+                            compareVersions(purchaseState.downloadedVersion, purchaseState.currentVersion) === 0;
+                        if (downloadIsCurrent) purchaseState.hasCurrentPurchase = true;
+                        if (!downloadIsCurrent) purchaseState.hasPreviousPurchase = true;
+                    }
+                    if (purchaseState.hasApprovedPurchase && !purchaseState.hasCurrentPurchase) {
+                        purchaseState.hasPreviousPurchase = true;
                     }
                 } catch(e) { console.error("Purchase check error", e); }
             }
+            currentAppPurchaseState = purchaseState;
+            const pricing = getAppPricing(app, purchaseState);
+            const updateBadgeText = getUpdateBadgeText(app, userEntitlements.downloads.get(app.id));
+            const detailsBadgeHTML = updateBadgeText
+                ? `<span class="update-kicker"><i class="fa-solid fa-sparkles"></i> ${updateBadgeText}</span>`
+                : '';
 
             if(app.category === 'premium') {
-                if(hasPurchased) {
-                    actionBtnHTML = `<button class="btn-primary btn-main-action" onclick="downloadAppById('${app.id}')"><i class="fa-solid fa-download"></i> Download Premium</button>`;
+                if(purchaseState.hasCurrentPurchase) {
+                    actionBtnHTML = `<button class="btn-primary btn-main-action" onclick="downloadAppById('${app.id}')"><i class="fa-solid fa-download"></i> Download Latest</button>`;
+                } else if(purchaseState.hasPreviousPurchase) {
+                    actionBtnHTML = `<button class="btn-primary btn-main-action update-action" style="background:linear-gradient(135deg,#7c3aed,#4f46e5);" onclick="openPaymentGateway('${app.id}')"><i class="fa-solid fa-arrows-rotate"></i> Update at 20% Off</button>`;
                 } else {
                     actionBtnHTML = `<button class="btn-primary btn-main-action" style="background:var(--premium-color);" onclick="openPaymentGateway('${app.id}')"><i class="fa-solid fa-cart-shopping"></i> Buy Premium</button>`;
                 }
             } else if(app.category === 'source') {
-                actionBtnHTML = `<button class="btn-primary btn-main-action" onclick="downloadAppById('${app.id}')"><i class="fa-solid fa-download"></i> Download Source</button>`;
+                actionBtnHTML = `<button class="btn-primary btn-main-action" onclick="downloadAppById('${app.id}')"><i class="fa-solid fa-${purchaseState.needsUpdate ? 'arrows-rotate' : 'download'}"></i> ${purchaseState.needsUpdate ? 'Update Source' : 'Download Source'}</button>`;
             } else {
-                actionBtnHTML = `<button class="btn-primary btn-main-action" onclick="downloadAppById('${app.id}')"><i class="fa-solid fa-download"></i> Install App</button>`;
+                actionBtnHTML = `<button class="btn-primary btn-main-action" onclick="downloadAppById('${app.id}')"><i class="fa-solid fa-${purchaseState.needsUpdate ? 'arrows-rotate' : 'download'}"></i> ${purchaseState.needsUpdate ? 'Update App' : 'Install App'}</button>`;
             }
 
             let favColor = "var(--text-secondary)";
@@ -1245,11 +1662,23 @@
             }
 
             let reviewsHtml = `<div class="screenshots-section" style="margin-top: 40px;" id="app-reviews-section"><h3>User Reviews</h3><p style="color:var(--text-secondary);">Loading reviews...</p></div>`;
+            const priceHTML = app.category === 'premium'
+                ? `<div class="details-price-card">
+                    <span class="details-price-label">${pricing.discountApplied ? 'Your update price' : 'One-time price'}</span>
+                    <span class="details-price-current">৳${pricing.finalPrice}</span>
+                    ${pricing.discountApplied ? `<span class="details-price-old">৳${pricing.originalPrice}</span><span class="discount-pill"><i class="fa-solid fa-tag"></i> 20% OFF</span>` : ''}
+                </div>`
+                : '';
 
             DOM.detailsContainer.innerHTML = `
                 <div class="details-header">
                     ${iconHTML}
                     <div class="details-info">
+                        <div class="details-kicker">
+                            <span>${app.category || 'APP'}</span>
+                            ${getAppVersion(app) ? `<span>v${getAppVersion(app)}</span>` : ''}
+                            ${detailsBadgeHTML}
+                        </div>
                         <h1 class="details-title">${app.title || 'App Name'}</h1>
                         <p class="details-dev">${app.developer || 'App Vault Publisher'}</p>
                         
@@ -1270,9 +1699,11 @@
                             </div>
                         </div>
 
+                        ${priceHTML}
                         <div class="details-actions">
                             ${actionBtnHTML}
                         </div>
+                        <div class="download-cta"><i class="fa-solid fa-shield-check"></i><span>Secure download • Your purchase and download history are saved to your account.</span></div>
                     </div>
                 </div>
 
@@ -1326,10 +1757,22 @@
         window.startPayment = function(method) {
             currentPayMethod = method;
             const isBkash = method === 'bkash';
+            const pricing = getAppPricing(currentAppForAction, currentAppPurchaseState);
             document.getElementById('payment-box').style.background = isBkash ? '#e2136e' : '#f98026';
             document.getElementById('payment-box').style.color = '#fff';
             document.getElementById('gateway-logo').src = isBkash ? "https://freelogopng.com/images/all_img/1656234745bkash-app-logo-png.png" : "https://freelogopng.com/images/all_img/1679248787Nagad-Logo.png";
-            document.getElementById('pay-amount').innerText = `৳ ${currentAppForAction.price || 150}`;
+            document.getElementById('pay-amount').innerText = `৳ ${pricing.finalPrice}`;
+            const originalAmount = document.getElementById('pay-amount-original');
+            const discountNote = document.getElementById('pay-discount-note');
+            if (pricing.discountApplied) {
+                originalAmount.innerText = `৳ ${pricing.originalPrice}`;
+                originalAmount.style.display = 'inline';
+                discountNote.innerText = `20% previous-buyer discount applied — you save ৳${pricing.discountAmount}`;
+                discountNote.style.display = 'block';
+            } else {
+                originalAmount.style.display = 'none';
+                discountNote.style.display = 'none';
+            }
             document.getElementById('sender-number-field').value = "";
             document.getElementById('trx-id-field').value = "";
             
@@ -1350,7 +1793,8 @@
             try {
                 const { doc, setDoc, serverTimestamp } = window.firestoreDB;
                 const transId = "TRX" + Date.now();
-                const amount = currentAppForAction.price || 150;
+                const pricing = getAppPricing(currentAppForAction, currentAppPurchaseState);
+                const amount = pricing.finalPrice;
                 
                 await setDoc(doc(window.firebaseDb, "transactions", transId), {
                     userId: currentUser.uid,
@@ -1358,6 +1802,10 @@
                     appId: currentAppForAction.id,
                     appTitle: currentAppForAction.title,
                     amount: amount,
+                    originalAmount: pricing.originalPrice,
+                    discountAmount: pricing.discountAmount,
+                    discountApplied: pricing.discountApplied,
+                    appVersion: getAppVersion(currentAppForAction),
                     method: currentPayMethod,
                     senderNumber: senderNum,
                     trxId: trxId,
@@ -1683,21 +2131,68 @@
             document.getElementById('payment-modal').style.display = 'none';
             document.getElementById('notification-modal').style.display = 'none';
             document.getElementById('avatar-modal').style.display = 'none';
+            document.getElementById('edit-profile-modal').style.display = 'none';
             document.getElementById('payment-box').style.background = 'var(--surface-color)';
             document.getElementById('payment-box').style.color = 'var(--text-primary)';
         };
 
         // --- PROFILE LOGIC (History, Favorites & Purchases) ---
-        window.switchProfileTab = function(tab) {
+        window.switchProfileTab = function(tab, buttonElement) {
             document.querySelectorAll('.profile-tab-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            event.target.classList.add('active');
+            if (buttonElement && buttonElement.classList.contains('profile-quick-action')) {
+                document.querySelectorAll('.profile-tab-btn').forEach(btn => {
+                    if (btn.textContent.toLowerCase().includes(tab === 'history' ? 'download' : tab === 'favorites' ? 'favorite' : 'purchase')) {
+                        btn.classList.add('active');
+                    }
+                });
+            } else if (buttonElement) {
+                buttonElement.classList.add('active');
+            }
             document.getElementById(`tab-${tab}`).classList.add('active');
+        };
+
+        window.openEditProfileModal = async function() {
+            if (!currentUser) {
+                alert("Please login first.");
+                switchView('auth');
+                return;
+            }
+            document.getElementById('edit-name-input').value =
+                document.getElementById('profile-display-name').textContent === 'My Account'
+                    ? (currentUser.displayName || '')
+                    : document.getElementById('profile-display-name').textContent;
+            document.getElementById('edit-email-input').value = currentUser.email || '';
+            document.getElementById('edit-profile-modal').style.display = 'flex';
+        };
+
+        window.saveProfileChanges = async function() {
+            if (!currentUser) return;
+            const name = document.getElementById('edit-name-input').value.trim();
+            if (!name) {
+                alert("Please enter a display name.");
+                return;
+            }
+            try {
+                const { doc, setDoc } = window.firestoreDB;
+                await setDoc(doc(window.firebaseDb, "users", currentUser.uid), {
+                    name,
+                    email: currentUser.email || '',
+                    updatedAt: Date.now()
+                }, { merge: true });
+                document.getElementById('profile-display-name').textContent = name;
+                closeModals();
+                alert("Profile updated successfully.");
+            } catch (error) {
+                console.error("Profile update error:", error);
+                alert("Profile could not be updated. Please try again.");
+            }
         };
 
         async function loadUserProfileData() {
             if(!currentUser) return;
             const { collection, getDocs, query, where, doc, getDoc } = window.firestoreDB;
+            await refreshUserEntitlements();
             
             try {
                 const uDoc = await getDoc(doc(window.firebaseDb, "users", currentUser.uid));
@@ -1707,6 +2202,9 @@
                     document.getElementById('profile-avatar-icon').style.display = 'none';
                 }
             } catch(e) {}
+
+            document.getElementById('profile-purchase-count').textContent = userEntitlements.purchases.size;
+            document.getElementById('profile-download-count').textContent = userEntitlements.downloads.size;
 
             try {
                 const transSnap = await getDocs(query(collection(window.firebaseDb, "transactions"), where("userId", "==", currentUser.uid)));
@@ -1737,6 +2235,7 @@
                     </div>`;
                 });
                 document.getElementById('tab-purchases').innerHTML = transHtml || '<p style="color: var(--text-secondary); text-align: center;">No purchases yet.</p>';
+                document.getElementById('profile-purchase-count').textContent = transArr.filter(item => item.status === 'approved').length;
             } catch(e) { console.log(e); }
 
             const downSnap = await getDocs(collection(window.firebaseDb, "users", currentUser.uid, "downloads"));
@@ -1756,6 +2255,7 @@
                 </div>`;
             });
             document.getElementById('tab-history').innerHTML = downHtml || '<p style="color: var(--text-secondary); text-align: center;">No downloaded apps yet.</p>';
+            document.getElementById('profile-download-count').textContent = downSnap.size;
 
             const favSnap = await getDocs(collection(window.firebaseDb, "users", currentUser.uid, "favorites"));
             let favHtml = '';
@@ -1771,6 +2271,7 @@
                 </div>`;
             });
             document.getElementById('tab-favorites').innerHTML = favHtml || '<p style="color: var(--text-secondary); text-align: center;">No favorite apps yet.</p>';
+            document.getElementById('profile-favorite-count').textContent = favSnap.size;
 
             const ratSnap = await getDocs(collection(window.firebaseDb, "users", currentUser.uid, "ratings"));
             let ratHtml = '';
@@ -1841,8 +2342,14 @@
                 await updateDoc(doc(window.firebaseDb, "apps", appId), { realDownloadCount: increment(1) });
                 if(currentUser) {
                     await setDoc(doc(window.firebaseDb, "users", currentUser.uid, "downloads", appId), {
-                        appId, appTitle: title, iconUrl: iconUrl, timestamp: Date.now()
+                        appId,
+                        appTitle: title,
+                        iconUrl: iconUrl,
+                        version: getAppVersion(appsData.find(item => item.id === appId)),
+                        fileUrl: url,
+                        timestamp: Date.now()
                     });
+                    await refreshUserEntitlements();
                 }
             } catch (error) { console.error("Error updating download record:", error); }
         };
@@ -1877,6 +2384,7 @@
             onAuthStateChanged(window.firebaseAuth, (user) => {
                 if (user) {
                     currentUser = user;
+                    refreshUserEntitlements();
                     document.getElementById('profile-email').textContent = user.email;
                     
                     const { doc, getDoc } = window.firestoreDB;
@@ -1893,6 +2401,8 @@
                     }
                 } else {
                     currentUser = null;
+                    userEntitlements = { downloads: new Map(), purchases: new Map() };
+                    applySorting();
                     document.getElementById('profile-email').textContent = 'Not logged in';
                     document.getElementById('profile-display-name').textContent = 'My Account';
                     document.getElementById('profile-avatar-img').style.display = 'none';
