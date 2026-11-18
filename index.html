@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>App Vault - Premium Store</title>
-    
+
     <!-- ==========================================
          ONESIGNAL PUSH NOTIFICATION SETUP
          ========================================== -->
@@ -20,17 +21,43 @@
       });
     </script>
     -->
-    
+
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <!-- Firebase SDKs (Setup as Module) -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-auth.js";
+        import {
+            initializeApp
+        } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js";
+        import {
+            getAuth,
+            signInWithEmailAndPassword,
+            createUserWithEmailAndPassword,
+            GoogleAuthProvider,
+            signInWithPopup,
+            signInWithRedirect,
+            getRedirectResult,
+            signOut,
+            onAuthStateChanged
+        } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-auth.js";
         // added deleteDoc for review deletion
-        import { getFirestore, collection, onSnapshot, doc, updateDoc, setDoc, getDoc, deleteDoc, increment, serverTimestamp, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore.js";
-        
+        import {
+            getFirestore,
+            collection,
+            onSnapshot,
+            doc,
+            updateDoc,
+            setDoc,
+            getDoc,
+            deleteDoc,
+            increment,
+            serverTimestamp,
+            query,
+            where,
+            getDocs
+        } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore.js";
+
         // Your Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyCGwd88VGGs5HB9qw8FUwfbbOecOZQ0QX4",
@@ -41,7 +68,7 @@
             messagingSenderId: "187837723536",
             appId: "1:187837723536:web:1f15b210927fa5a90bb915"
         };
-        
+
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         window.firebaseAuth = getAuth(app);
@@ -58,9 +85,32 @@
             signOut,
             onAuthStateChanged
         };
-        window.firestoreDB = { collection, onSnapshot, doc, updateDoc, setDoc, getDoc, deleteDoc, increment, serverTimestamp, query, where, getDocs };
+        window.firestoreDB = {
+            collection,
+            onSnapshot,
+            doc,
+            updateDoc,
+            setDoc,
+            getDoc,
+            deleteDoc,
+            increment,
+            serverTimestamp,
+            query,
+            where,
+            getDocs
+        };
     </script>
-
+    <script>
+        function esc(s) {
+            return String(s ?? '').replace(/[&<>"']/g, c => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
+            } [c]));
+        }
+    </script>
     <style>
         /* ========================
            PREMIUM CSS STYLES
@@ -74,7 +124,7 @@
             --text-secondary: #6b7280;
             --primary-color: #2563eb;
             --primary-hover: #1d4ed8;
-            --premium-color: #10b981; 
+            --premium-color: #10b981;
             --border-color: #e5e7eb;
             --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
             --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
@@ -200,8 +250,15 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* --- Categories Navigation --- */
@@ -213,7 +270,10 @@
             padding-bottom: 5px;
             scrollbar-width: none;
         }
-        .categories-nav::-webkit-scrollbar { display: none; }
+
+        .categories-nav::-webkit-scrollbar {
+            display: none;
+        }
 
         .cat-btn {
             padding: 10px 20px;
@@ -229,7 +289,8 @@
             box-shadow: var(--shadow-sm);
         }
 
-        .cat-btn.active, .cat-btn:hover {
+        .cat-btn.active,
+        .cat-btn:hover {
             background: var(--text-primary);
             color: var(--surface-color);
             border-color: var(--text-primary);
@@ -242,11 +303,13 @@
             color: var(--text-secondary);
             grid-column: 1/-1;
         }
+
         .empty-state i {
             font-size: 4rem;
             margin-bottom: 20px;
             opacity: 0.3;
         }
+
         .empty-state h3 {
             font-size: 1.5rem;
             color: var(--text-primary);
@@ -263,12 +326,29 @@
 
         /* Filter & Sorting Bar */
         .filter-bar {
-            display: flex; justify-content: space-between; align-items: center; margin-top: 30px; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
         }
+
         .filter-bar select {
-            padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--surface-color); color: var(--text-primary); font-weight: 500; outline: none; transition: var(--transition);
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: var(--surface-color);
+            color: var(--text-primary);
+            font-weight: 500;
+            outline: none;
+            transition: var(--transition);
         }
-        .filter-bar select:focus { border-color: var(--primary-color); }
+
+        .filter-bar select:focus {
+            border-color: var(--primary-color);
+        }
 
         .app-grid {
             display: grid;
@@ -280,6 +360,7 @@
             position: relative;
             margin-bottom: 40px;
         }
+
         .carousel {
             display: grid;
             grid-auto-flow: column;
@@ -292,7 +373,10 @@
             padding: 10px 0;
             scrollbar-width: none;
         }
-        .carousel::-webkit-scrollbar { display: none; }
+
+        .carousel::-webkit-scrollbar {
+            display: none;
+        }
 
         .app-card {
             background: var(--surface-color);
@@ -327,7 +411,7 @@
             padding: 5px 10px;
             border-radius: 12px;
             box-shadow: 0 4px 6px rgba(234, 88, 12, 0.3);
-            display: none; 
+            display: none;
             z-index: 10;
             letter-spacing: 0.5px;
         }
@@ -351,7 +435,7 @@
         .app-icon {
             width: 80px;
             height: 80px;
-            border-radius: 22%; 
+            border-radius: 22%;
             background: var(--bg-color);
             display: flex;
             align-items: center;
@@ -387,7 +471,10 @@
             gap: 5px;
             margin-bottom: 15px;
         }
-        .card-rating i { color: #f59e0b; }
+
+        .card-rating i {
+            color: #f59e0b;
+        }
 
         /* --- Buttons --- */
         .btn-install {
@@ -402,21 +489,36 @@
             transition: var(--transition);
             width: 100%;
         }
+
         .app-card:hover .btn-install {
             background: var(--primary-color);
             color: #fff;
         }
+
         .btn-premium {
             background: rgba(16, 185, 129, 0.1);
             color: var(--premium-color);
         }
+
         .app-card:hover .btn-premium {
             background: var(--premium-color);
             color: #fff;
         }
 
-        .btn-primary { background: var(--primary-color); color: white; padding: 12px 24px; border-radius: var(--radius-md); border: none; font-weight: 600; cursor: pointer; transition: var(--transition); }
-        .btn-primary:hover { background: var(--primary-hover); }
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+            padding: 12px 24px;
+            border-radius: var(--radius-md);
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
 
         /* --- APP DETAILS PAGE --- */
         .details-header {
@@ -434,6 +536,7 @@
             position: relative;
             overflow: hidden;
         }
+
         .details-header::after {
             content: "";
             position: absolute;
@@ -445,6 +548,7 @@
             background: rgba(16, 185, 129, 0.12);
             pointer-events: none;
         }
+
         .details-icon-large {
             position: relative;
             z-index: 1;
@@ -463,7 +567,7 @@
             box-shadow: var(--shadow-lg);
             object-fit: cover;
             flex-shrink: 0;
-            border: 1px solid rgba(255,255,255,0.35);
+            border: 1px solid rgba(255, 255, 255, 0.35);
         }
 
         .details-info {
@@ -472,8 +576,20 @@
             z-index: 1;
         }
 
-        .details-title { font-size: 2.2rem; font-weight: 700; margin-bottom: 8px; letter-spacing: -1px; }
-        .details-dev { color: var(--primary-color); font-weight: 500; margin-bottom: 15px; font-size: 1.1rem; }
+        .details-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -1px;
+        }
+
+        .details-dev {
+            color: var(--primary-color);
+            font-weight: 500;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
         .details-kicker {
             display: flex;
             align-items: center;
@@ -486,16 +602,19 @@
             letter-spacing: 0.7px;
             text-transform: uppercase;
         }
+
         .details-kicker span {
             padding: 5px 9px;
             border-radius: 999px;
             background: rgba(37, 99, 235, 0.1);
             color: var(--primary-color);
         }
+
         .details-kicker .update-kicker {
             color: #fff;
             background: linear-gradient(135deg, #7c3aed, #4f46e5);
         }
+
         .details-price-card {
             display: flex;
             align-items: center;
@@ -503,20 +622,24 @@
             gap: 10px;
             margin: 0 0 22px;
         }
+
         .details-price-label {
             color: var(--text-secondary);
             font-size: 0.82rem;
         }
+
         .details-price-current {
             color: var(--text-primary);
             font-size: 1.35rem;
             font-weight: 800;
         }
+
         .details-price-old {
             color: var(--text-secondary);
             font-size: 0.9rem;
             text-decoration: line-through;
         }
+
         .discount-pill {
             display: inline-flex;
             align-items: center;
@@ -534,24 +657,62 @@
             gap: 30px;
             margin-bottom: 25px;
         }
+
         .stat-item {
             display: flex;
             flex-direction: column;
             align-items: center;
         }
-        .stat-value { font-size: 1.3rem; font-weight: 700; display: flex; align-items: center; gap: 5px; }
-        .stat-value i { color: #f59e0b; font-size: 1.1rem;}
-        .stat-label { font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px; }
-        .stat-divider { width: 1px; background: var(--border-color); height: 40px; }
 
-        .details-actions { display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
+        .stat-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .stat-value i {
+            color: #f59e0b;
+            font-size: 1.1rem;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .stat-divider {
+            width: 1px;
+            background: var(--border-color);
+            height: 40px;
+        }
+
+        .details-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
         .btn-main-action {
-            flex-grow: 1; max-width: 300px; font-size: 1.1rem; padding: 14px;
+            flex-grow: 1;
+            max-width: 300px;
+            font-size: 1.1rem;
+            padding: 14px;
         }
 
         /* Screenshots */
-        .screenshots-section { margin-bottom: 30px; }
-        .screenshots-section h3 { margin-bottom: 15px; font-size: 1.3rem; }
+        .screenshots-section {
+            margin-bottom: 30px;
+        }
+
+        .screenshots-section h3 {
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
         .screenshots-container {
             display: flex;
             gap: 15px;
@@ -560,8 +721,11 @@
             scrollbar-width: none;
             scroll-snap-type: x mandatory;
         }
-        .screenshots-container::-webkit-scrollbar { display: none; }
-        
+
+        .screenshots-container::-webkit-scrollbar {
+            display: none;
+        }
+
         .screenshot-img {
             height: 350px;
             border-radius: var(--radius-md);
@@ -588,12 +752,16 @@
             color: var(--text-secondary);
             white-space: pre-line;
         }
-        .app-description h3, .screenshots-section h3 {
+
+        .app-description h3,
+        .screenshots-section h3 {
             display: flex;
             align-items: center;
             gap: 9px;
         }
-        .app-description h3::before, .screenshots-section h3::before {
+
+        .app-description h3::before,
+        .screenshots-section h3::before {
             content: "";
             width: 4px;
             height: 20px;
@@ -613,34 +781,169 @@
             scrollbar-width: none;
             scroll-behavior: smooth;
         }
-        .similar-apps-grid::-webkit-scrollbar { display: none; }
-        .compact-app-card {
-            display: flex; align-items: center; width: 280px; background: var(--surface-color); padding: 10px; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border: 1px solid var(--border-color); scroll-snap-align: start; cursor: pointer; transition: var(--transition);
+
+        .similar-apps-grid::-webkit-scrollbar {
+            display: none;
         }
-        .compact-app-card:hover { transform: translateX(5px); box-shadow: var(--shadow-md); border-color: var(--primary-color); }
-        .compact-app-card img { width: 60px; height: 60px; border-radius: 12px; margin-right: 12px; object-fit: cover; }
-        .compact-app-info { flex-grow: 1; overflow: hidden; }
-        .compact-app-title { font-size: 0.95rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 3px; }
-        .compact-app-rating { font-size: 0.75rem; color: var(--text-secondary); display: flex; align-items: center; gap: 4px; }
-        .compact-app-rating i { color: #f59e0b; }
+
+        .compact-app-card {
+            display: flex;
+            align-items: center;
+            width: 280px;
+            background: var(--surface-color);
+            padding: 10px;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            scroll-snap-align: start;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .compact-app-card:hover {
+            transform: translateX(5px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary-color);
+        }
+
+        .compact-app-card img {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            margin-right: 12px;
+            object-fit: cover;
+        }
+
+        .compact-app-info {
+            flex-grow: 1;
+            overflow: hidden;
+        }
+
+        .compact-app-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 3px;
+        }
+
+        .compact-app-rating {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .compact-app-rating i {
+            color: #f59e0b;
+        }
 
         /* User Reviews Section Premium Update */
-        .review-box { background: var(--surface-color); padding: 20px; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-bottom: 15px; transition: var(--transition); }
-        .review-box:hover { box-shadow: var(--shadow-md); }
-        .review-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-        .review-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--bg-color); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: var(--text-secondary); object-fit: cover; }
-        .review-name { font-weight: 600; font-size: 0.95rem; }
-        .review-date { font-size: 0.75rem; color: var(--text-secondary); }
-        .review-rating i { color: #f59e0b; font-size: 0.8rem; }
-        .review-text { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; }
-        
-        .review-actions { display: flex; gap: 15px; margin-top: 12px; }
-        .review-action-btn { background: rgba(0,0,0,0.05); border: none; font-size: 0.8rem; font-weight: 600; padding: 6px 12px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 6px; color: var(--text-secondary); transition: var(--transition); }
-        .review-action-btn:hover { background: rgba(37, 99, 235, 0.1); color: var(--primary-color); }
-        .review-action-btn.delete:hover { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+        .review-box {
+            background: var(--surface-color);
+            padding: 20px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            margin-bottom: 15px;
+            transition: var(--transition);
+        }
 
-        #review-text-input { width: 100%; padding: 12px; border-radius: var(--radius-md); border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-primary); margin: 15px 0; outline: none; font-family: inherit; resize: vertical; min-height: 80px; transition: var(--transition); }
-        #review-text-input:focus { border-color: var(--primary-color); }
+        .review-box:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .review-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .review-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--bg-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            object-fit: cover;
+        }
+
+        .review-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .review-date {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .review-rating i {
+            color: #f59e0b;
+            font-size: 0.8rem;
+        }
+
+        .review-text {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .review-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 12px;
+        }
+
+        .review-action-btn {
+            background: rgba(0, 0, 0, 0.05);
+            border: none;
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-secondary);
+            transition: var(--transition);
+        }
+
+        .review-action-btn:hover {
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--primary-color);
+        }
+
+        .review-action-btn.delete:hover {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+
+        #review-text-input {
+            width: 100%;
+            padding: 12px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            background: var(--bg-color);
+            color: var(--text-primary);
+            margin: 15px 0;
+            outline: none;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 80px;
+            transition: var(--transition);
+        }
+
+        #review-text-input:focus {
+            border-color: var(--primary-color);
+        }
 
         .btn-back {
             background: transparent;
@@ -654,10 +957,14 @@
             gap: 8px;
             transition: var(--transition);
         }
-        .btn-back:hover { color: var(--text-primary); }
+
+        .btn-back:hover {
+            color: var(--text-primary);
+        }
 
         /* --- Profile / Auth --- */
-        .auth-card, .profile-card {
+        .auth-card,
+        .profile-card {
             background: var(--surface-color);
             padding: 40px;
             border-radius: var(--radius-lg);
@@ -666,39 +973,138 @@
             margin: 40px auto;
             border: 1px solid var(--border-color);
         }
-        .auth-card h2 { text-align: center; margin-bottom: 10px; }
-        .auth-card input {
-            width: 100%; padding: 14px; margin: 10px 0; border-radius: var(--radius-md);
-            border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-primary);
-            outline: none; transition: var(--transition);
+
+        .auth-card h2 {
+            text-align: center;
+            margin-bottom: 10px;
         }
-        .auth-card input:focus { border-color: var(--primary-color); }
-        .auth-card button { width: 100%; margin-top: 15px; }
-        .google-mark { width: 20px; height: 20px; flex: 0 0 20px; }
-        .google-login-btn:disabled { opacity: 0.65; cursor: wait; }
-        .profile-settings { margin-top: 20px; }
-        .setting-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid var(--border-color); }
+
+        .auth-card input {
+            width: 100%;
+            padding: 14px;
+            margin: 10px 0;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            background: var(--bg-color);
+            color: var(--text-primary);
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .auth-card input:focus {
+            border-color: var(--primary-color);
+        }
+
+        .auth-card button {
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .google-mark {
+            width: 20px;
+            height: 20px;
+            flex: 0 0 20px;
+        }
+
+        .google-login-btn:disabled {
+            opacity: 0.65;
+            cursor: wait;
+        }
+
+        .profile-settings {
+            margin-top: 20px;
+        }
+
+        .setting-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
 
         /* Profile Avatar Upload Hover Effect */
-        .avatar-upload-wrapper { position: relative; display: inline-block; cursor: pointer; }
-        .avatar-upload-overlay { position: absolute; top: 0; left: 0; width: 85px; height: 85px; background: rgba(0,0,0,0.5); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; opacity: 0; transition: opacity 0.3s; margin: 0 auto; }
-        .avatar-upload-wrapper:hover .avatar-upload-overlay { opacity: 1; }
+        .avatar-upload-wrapper {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .avatar-upload-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 85px;
+            height: 85px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            opacity: 0;
+            transition: opacity 0.3s;
+            margin: 0 auto;
+        }
+
+        .avatar-upload-wrapper:hover .avatar-upload-overlay {
+            opacity: 1;
+        }
 
         /* ADDITIONS FOR TABS & MODALS */
         .profile-tabs {
-            display: flex; gap: 10px; margin-top: 25px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; overflow-x: auto; scrollbar-width: none;
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            overflow-x: auto;
+            scrollbar-width: none;
         }
-        .profile-tabs::-webkit-scrollbar { display: none; }
+
+        .profile-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
         .profile-tab-btn {
-            background: transparent; border: none; font-size: 0.95rem; font-weight: 600; color: var(--text-secondary); cursor: pointer; padding: 5px 10px; transition: var(--transition); white-space: nowrap;
+            background: transparent;
+            border: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 5px 10px;
+            transition: var(--transition);
+            white-space: nowrap;
         }
-        .profile-tab-btn.active { color: var(--primary-color); border-bottom: 2px solid var(--primary-color); }
-        
-        .tab-content { display: none; margin-top: 20px; }
-        .tab-content.active { display: block; }
-        
-        .history-item { display: flex; align-items: center; justify-content: space-between; padding: 12px; border-bottom: 1px solid var(--border-color); }
-        .history-item-left { display: flex; align-items: center; gap: 15px; }
+
+        .profile-tab-btn.active {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        .tab-content {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .history-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .history-item-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
 
         /* Premium profile experience */
         .profile-card {
@@ -707,18 +1113,21 @@
                 radial-gradient(circle at 100% 0%, rgba(37, 99, 235, 0.12), transparent 28%),
                 var(--surface-color);
         }
+
         .profile-identity {
             padding: 26px 20px 22px;
             border-radius: var(--radius-lg);
-            background: linear-gradient(135deg, rgba(37,99,235,0.08), rgba(16,185,129,0.08));
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.08), rgba(16, 185, 129, 0.08));
             border: 1px solid var(--border-color);
         }
+
         .profile-stat-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 12px;
             margin: 18px 0 24px;
         }
+
         .profile-stat {
             padding: 15px 10px;
             text-align: center;
@@ -726,14 +1135,25 @@
             border-radius: var(--radius-md);
             background: var(--surface-color);
         }
-        .profile-stat strong { display: block; font-size: 1.35rem; color: var(--text-primary); }
-        .profile-stat span { color: var(--text-secondary); font-size: 0.75rem; }
+
+        .profile-stat strong {
+            display: block;
+            font-size: 1.35rem;
+            color: var(--text-primary);
+        }
+
+        .profile-stat span {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+        }
+
         .profile-quick-actions {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 10px;
             margin: 0 0 25px;
         }
+
         .profile-quick-action {
             border: 1px solid var(--border-color);
             border-radius: var(--radius-md);
@@ -745,8 +1165,20 @@
             font-size: 0.78rem;
             transition: var(--transition);
         }
-        .profile-quick-action i { display: block; color: var(--primary-color); font-size: 1.1rem; margin-bottom: 6px; }
-        .profile-quick-action:hover { border-color: var(--primary-color); transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+
+        .profile-quick-action i {
+            display: block;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            margin-bottom: 6px;
+        }
+
+        .profile-quick-action:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
         .profile-status {
             display: inline-flex;
             align-items: center;
@@ -756,11 +1188,36 @@
             font-size: 0.78rem;
             font-weight: 700;
         }
-        .profile-status i { font-size: 0.65rem; }
-        .edit-profile-form { text-align: left; }
-        .edit-profile-form label { display: block; color: var(--text-secondary); font-size: 0.8rem; font-weight: 600; margin: 12px 0 5px; }
-        .edit-profile-form input { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-color); color: var(--text-primary); outline: none; }
-        .edit-profile-form input:focus { border-color: var(--primary-color); }
+
+        .profile-status i {
+            font-size: 0.65rem;
+        }
+
+        .edit-profile-form {
+            text-align: left;
+        }
+
+        .edit-profile-form label {
+            display: block;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin: 12px 0 5px;
+        }
+
+        .edit-profile-form input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            background: var(--bg-color);
+            color: var(--text-primary);
+            outline: none;
+        }
+
+        .edit-profile-form input:focus {
+            border-color: var(--primary-color);
+        }
 
         .download-cta {
             display: flex;
@@ -768,73 +1225,527 @@
             gap: 10px;
             margin: 18px 0 0;
             padding: 12px 14px;
-            border: 1px solid rgba(37,99,235,0.2);
+            border: 1px solid rgba(37, 99, 235, 0.2);
             border-radius: var(--radius-md);
             color: var(--text-secondary);
-            background: rgba(37,99,235,0.06);
+            background: rgba(37, 99, 235, 0.06);
             font-size: 0.82rem;
         }
-        .download-cta i { color: var(--primary-color); font-size: 1.1rem; }
-        
+
+        .download-cta i {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+
         /* Modals */
         .custom-modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6);
-            display: none; align-items: center; justify-content: center; z-index: 2000;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
         }
+
         .modal-box {
-            background: var(--surface-color); padding: 30px; border-radius: var(--radius-lg); width: 90%; max-width: 400px;
-            text-align: center; position: relative; box-shadow: var(--shadow-lg);
+            background: var(--surface-color);
+            padding: 30px;
+            border-radius: var(--radius-lg);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            position: relative;
+            box-shadow: var(--shadow-lg);
         }
-        .close-modal-btn { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; cursor: pointer; color: var(--text-secondary); }
-        
-        .stars-container i { font-size: 2.2rem; color: var(--border-color); cursor: pointer; transition: color 0.2s; margin: 0 5px; }
-        .stars-container i.active { color: #f59e0b; }
-        
-        .pay-methods { display: flex; gap: 20px; justify-content: center; margin-top: 20px; }
+
+        .close-modal-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+
+        .stars-container i {
+            font-size: 2.2rem;
+            color: var(--border-color);
+            cursor: pointer;
+            transition: color 0.2s;
+            margin: 0 5px;
+        }
+
+        .stars-container i.active {
+            color: #f59e0b;
+        }
+
+        .pay-methods {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
         .pay-method {
-            border: 2px solid var(--border-color); border-radius: var(--radius-md); padding: 15px; cursor: pointer; transition: var(--transition); background: var(--surface-color);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 15px;
+            cursor: pointer;
+            transition: var(--transition);
+            background: var(--surface-color);
         }
-        .pay-method:hover { border-color: var(--primary-color); }
-        .pay-method img { width: 80px; height: auto; display: block; }
-        
-        .payment-step { display: none; }
-        .payment-step.active { display: block; }
-        .pay-input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid rgba(255,255,255,0.3); border-radius: var(--radius-md); background: rgba(0,0,0,0.1); color: #fff; text-align: center; font-size: 1rem; }
-        .pay-input::placeholder { color: rgba(255,255,255,0.7); }
-        .pay-input:focus { outline: none; border-color: #fff; background: rgba(0,0,0,0.2); }
+
+        .pay-method:hover {
+            border-color: var(--primary-color);
+        }
+
+        .pay-method img {
+            width: 80px;
+            height: auto;
+            display: block;
+        }
+
+        .payment-step {
+            display: none;
+        }
+
+        .payment-step.active {
+            display: block;
+        }
+
+        .pay-input {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: var(--radius-md);
+            background: rgba(0, 0, 0, 0.1);
+            color: #fff;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        .pay-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .pay-input:focus {
+            outline: none;
+            border-color: #fff;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        /* ========================
+           CATEGORY DIALOG (Dynamic)
+           ======================== */
+        .cat-dialog-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 3000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(8, 12, 28, 0.62);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .cat-dialog-overlay.show {
+            display: flex;
+            animation: cdFade 0.3s ease both;
+        }
+
+        .cat-dialog-overlay.closing {
+            animation: cdFadeOut 0.22s ease both;
+        }
+
+        .cat-dialog {
+            position: relative;
+            width: 100%;
+            max-width: 380px;
+            padding: 44px 28px 28px;
+            text-align: center;
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.45);
+            animation: cdPop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+        }
+
+        .cat-dialog-overlay.closing .cat-dialog {
+            animation: cdPopOut 0.22s ease both;
+        }
+
+        .cat-dialog::before {
+            content: "";
+            position: absolute;
+            top: -90px;
+            left: 50%;
+            width: 320px;
+            height: 220px;
+            transform: translateX(-50%);
+            background: radial-gradient(closest-side, rgba(37, 99, 235, 0.28), transparent);
+            pointer-events: none;
+        }
+
+        .cat-dialog-close {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            width: 34px;
+            height: 34px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            background: var(--bg-color);
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            z-index: 2;
+        }
+
+        .cat-dialog-close:hover {
+            background: var(--border-color);
+            color: var(--text-primary);
+            transform: rotate(90deg);
+        }
+
+        .cat-dialog-brand {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 22px;
+            animation: cdUp 0.5s 0.12s ease both;
+        }
+
+        .cat-dialog-logo {
+            width: 68px;
+            height: 68px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary-color), #7c3aed);
+            color: #fff;
+            font-size: 1.7rem;
+            overflow: hidden;
+            box-shadow: 0 10px 24px -6px rgba(37, 99, 235, 0.55);
+            animation: cdFloat 3.2s ease-in-out infinite;
+        }
+
+        .cat-dialog-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .cat-dialog-site {
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 1.6px;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+        }
+
+        .cat-dialog-divider {
+            width: 46px;
+            height: 4px;
+            border-radius: 4px;
+            margin: 0 auto 18px;
+            background: linear-gradient(90deg, var(--primary-color), #7c3aed);
+            animation: cdUp 0.5s 0.2s ease both;
+        }
+
+        .cat-dialog-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            line-height: 1.35;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+            text-wrap: balance;
+            animation: cdUp 0.5s 0.26s ease both;
+        }
+
+        .cat-dialog-desc {
+            font-size: 0.95rem;
+            line-height: 1.65;
+            color: var(--text-secondary);
+            margin-bottom: 26px;
+            text-wrap: balance;
+            white-space: pre-line;
+            animation: cdUp 0.5s 0.32s ease both;
+        }
+
+        .cat-dialog-desc:empty {
+            display: none;
+        }
+
+        .cat-dialog-btn {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 16px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+            background: linear-gradient(135deg, var(--primary-color), #7c3aed);
+            box-shadow: 0 12px 24px -8px rgba(37, 99, 235, 0.6);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: var(--transition);
+            animation: cdUp 0.5s 0.38s ease both;
+        }
+
+        .cat-dialog-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 16px 28px -8px rgba(37, 99, 235, 0.7);
+        }
+
+        .cat-dialog-btn:active {
+            transform: scale(0.98);
+        }
+
+        .cat-dialog-btn::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -80%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+            transform: skewX(-20deg);
+            animation: cdShine 3.4s 1s ease-in-out infinite;
+        }
+
+        @keyframes cdFade {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes cdFadeOut {
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0;
+            }
+        }
+
+        @keyframes cdPop {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        @keyframes cdPopOut {
+            to {
+                opacity: 0;
+                transform: translateY(14px) scale(0.96);
+            }
+        }
+
+        @keyframes cdUp {
+            from {
+                opacity: 0;
+                transform: translateY(14px);
+            }
+
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        @keyframes cdFloat {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-6px);
+            }
+        }
+
+        @keyframes cdShine {
+            0% {
+                left: -80%;
+            }
+
+            45%,
+            100% {
+                left: 140%;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            .cat-dialog,
+            .cat-dialog *,
+            .cat-dialog-overlay {
+                animation: none !important;
+            }
+        }
 
         /* Responsive */
         @media (max-width: 768px) {
-            .search-bar { width: 50%; }
-            .carousel { grid-auto-columns: calc((100% - 20px) / 3); gap: 10px; }
-            .app-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
-            .app-card { padding: 12px 8px; }
-            .app-icon { width: 64px; height: 64px; font-size: 1.5rem; margin-bottom: 10px; }
-            .app-card h3 { font-size: 0.9rem; }
-            .app-card p { font-size: 0.7rem; }
-            .btn-install { padding: 7px 8px; font-size: 0.75rem; }
-            .details-header { flex-direction: column; align-items: center; text-align: center; }
-            .details-actions { flex-direction: column; width: 100%; }
-            .btn-main-action { max-width: 100%; }
-            .details-price-card { justify-content: center; }
-            .details-stats { justify-content: center; width: 100%; }
-            .screenshot-img { height: 280px; }
-            .profile-card { max-width: 100%; margin: 20px 0; }
-            .profile-stat-grid, .profile-quick-actions { gap: 8px; }
-            .filter-bar h2 { margin-bottom: 10px; }
-            .filter-bar { flex-direction: column; align-items: flex-start; }
-            .filter-bar select { width: 100%; }
+            .search-bar {
+                width: 50%;
+            }
+
+            .carousel {
+                grid-auto-columns: calc((100% - 20px) / 3);
+                gap: 10px;
+            }
+
+            .app-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 10px;
+            }
+
+            .app-card {
+                padding: 12px 8px;
+            }
+
+            .app-icon {
+                width: 64px;
+                height: 64px;
+                font-size: 1.5rem;
+                margin-bottom: 10px;
+            }
+
+            .app-card h3 {
+                font-size: 0.9rem;
+            }
+
+            .app-card p {
+                font-size: 0.7rem;
+            }
+
+            .btn-install {
+                padding: 7px 8px;
+                font-size: 0.75rem;
+            }
+
+            .details-header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .details-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn-main-action {
+                max-width: 100%;
+            }
+
+            .details-price-card {
+                justify-content: center;
+            }
+
+            .details-stats {
+                justify-content: center;
+                width: 100%;
+            }
+
+            .screenshot-img {
+                height: 280px;
+            }
+
+            .profile-card {
+                max-width: 100%;
+                margin: 20px 0;
+            }
+
+            .profile-stat-grid,
+            .profile-quick-actions {
+                gap: 8px;
+            }
+
+            .filter-bar h2 {
+                margin-bottom: 10px;
+            }
+
+            .filter-bar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .filter-bar select {
+                width: 100%;
+            }
         }
+
         @media (max-width: 480px) {
-            .app-header { flex-direction: column; gap: 15px; padding: 16px; align-items: stretch; }
-            .header-top-row { display: flex; justify-content: space-between; align-items: center; }
-            .search-bar { width: 100%; display: flex !important; order: 3; margin-top: 5px; }
-            .logo span { display: inline-block; }
-            .carousel { grid-auto-columns: calc((100% - 20px) / 3); gap: 10px; }
-            .compact-app-card { width: 280px; }
+            .app-header {
+                flex-direction: column;
+                gap: 15px;
+                padding: 16px;
+                align-items: stretch;
+            }
+
+            .header-top-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .search-bar {
+                width: 100%;
+                display: flex !important;
+                order: 3;
+                margin-top: 5px;
+            }
+
+            .logo span {
+                display: inline-block;
+            }
+
+            .carousel {
+                grid-auto-columns: calc((100% - 20px) / 3);
+                gap: 10px;
+            }
+
+            .compact-app-card {
+                width: 280px;
+            }
         }
     </style>
 </head>
+
 <body>
 
     <!-- Header -->
@@ -856,15 +1767,16 @@
 
     <!-- Main Content Area -->
     <main id="main-content">
-        
+
         <!-- ================= HOME VIEW ================= -->
         <section id="home-view" class="view active">
-            
+
             <!-- Categories Navigation -->
             <div class="categories-nav">
                 <button class="cat-btn active" data-category="all">Explore All</button>
                 <button class="cat-btn" data-category="apps">Apps</button>
                 <button class="cat-btn" data-category="games">Games</button>
+                <button class="cat-btn" data-category="panel">Panel</button>
                 <button class="cat-btn" data-category="premium">Premium</button>
                 <button class="cat-btn" data-category="source">Source Code</button>
             </div>
@@ -906,7 +1818,7 @@
         <!-- ================= PROFILE VIEW ================= -->
         <section id="profile-view" class="view hidden">
             <div class="profile-card">
-                
+
                 <div class="profile-identity" style="text-align: center; margin-bottom: 18px;">
                     <!-- PROFILE PICTURE UPLOAD AREA (AVATAR MODAL) -->
                     <div class="avatar-upload-wrapper" onclick="openAvatarSelection()">
@@ -916,7 +1828,7 @@
                         </div>
                         <div class="avatar-upload-overlay"><i class="fa-solid fa-camera" style="font-size: 1.5rem;"></i></div>
                     </div>
-                    
+
                     <h2 id="profile-display-name" style="margin-bottom: 5px;">My Account</h2>
                     <p style="color: var(--text-secondary);" id="profile-email">Not logged in</p>
                     <div class="profile-status"><i class="fa-solid fa-circle"></i> Account ready</div>
@@ -933,7 +1845,7 @@
                     <button class="profile-quick-action" type="button" onclick="switchProfileTab('history', this)"><i class="fa-solid fa-download"></i>Downloads</button>
                     <button class="profile-quick-action" type="button" onclick="switchProfileTab('favorites', this)"><i class="fa-solid fa-heart"></i>Favorites</button>
                 </div>
-                
+
                 <div class="profile-settings" style="margin-bottom: 25px;">
                     <div class="setting-row">
                         <span style="font-weight: 500;"><i class="fa-solid fa-palette" style="color: var(--primary-color); margin-right: 8px;"></i> Theme Appearance</span>
@@ -960,7 +1872,7 @@
                     <button class="profile-tab-btn" onclick="switchProfileTab('favorites', this)">Favorites</button>
                     <button class="profile-tab-btn" onclick="switchProfileTab('ratings', this)">My Ratings</button>
                 </div>
-                
+
                 <div id="tab-purchases" class="tab-content active">
                     <p style="color: var(--text-secondary); text-align: center;">No purchases yet.</p>
                 </div>
@@ -985,22 +1897,22 @@
             <div class="auth-card">
                 <h2 id="auth-title">Sign In</h2>
                 <p style="color: var(--text-secondary); text-align: center; margin-bottom: 30px;" id="auth-subtitle">Sign in to access your apps.</p>
-                
+
                 <input type="text" id="name-input" placeholder="Full Name" style="display: none;">
                 <input type="email" id="email-input" placeholder="Email Address">
                 <input type="password" id="password-input" placeholder="Password">
-                
+
                 <button class="btn-primary" id="login-btn">Sign In</button>
                 <p id="toggle-auth" style="text-align: center; margin-top: 15px; font-size: 0.9rem; color: var(--primary-color); cursor: pointer;">Don't have an account? Sign Up</p>
-                
+
                 <div style="margin: 25px 0; text-align: center; color: var(--text-secondary); font-size: 0.9rem;">OR</div>
-                
+
                 <button class="btn-install google-login-btn" id="google-login-btn" type="button" style="border: 1px solid var(--border-color); background: var(--surface-color); color: var(--text-primary); display:flex; align-items:center; justify-content:center; gap:10px;">
                     <svg class="google-mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                        <path fill="#4285F4" d="M21.35 12.27c0-.79-.07-1.55-.22-2.27H12v4.3h5.24a4.48 4.48 0 0 1-1.94 2.94v2.45h3.14c1.84-1.69 2.91-4.18 2.91-7.42Z"/>
-                        <path fill="#34A853" d="M12 21.7c2.63 0 4.84-.87 6.45-2.36l-3.14-2.45c-.87.58-1.98.92-3.31.92-2.54 0-4.7-1.72-5.47-4.03H3.29v2.53A9.74 9.74 0 0 0 12 21.7Z"/>
-                        <path fill="#FBBC05" d="M6.53 13.78A5.86 5.86 0 0 1 6.22 12c0-.62.11-1.22.31-1.78V7.69H3.29A9.74 9.74 0 0 0 2.25 12c0 1.56.37 3.04 1.04 4.31l3.24-2.53Z"/>
-                        <path fill="#EA4335" d="M12 6.19c1.43 0 2.72.49 3.73 1.45l2.8-2.8C16.83 3.27 14.63 2.3 12 2.3a9.74 9.74 0 0 0-8.71 5.39l3.24 2.53c.77-2.31 2.93-4.03 5.47-4.03Z"/>
+                        <path fill="#4285F4" d="M21.35 12.27c0-.79-.07-1.55-.22-2.27H12v4.3h5.24a4.48 4.48 0 0 1-1.94 2.94v2.45h3.14c1.84-1.69 2.91-4.18 2.91-7.42Z" />
+                        <path fill="#34A853" d="M12 21.7c2.63 0 4.84-.87 6.45-2.36l-3.14-2.45c-.87.58-1.98.92-3.31.92-2.54 0-4.7-1.72-5.47-4.03H3.29v2.53A9.74 9.74 0 0 0 12 21.7Z" />
+                        <path fill="#FBBC05" d="M6.53 13.78A5.86 5.86 0 0 1 6.22 12c0-.62.11-1.22.31-1.78V7.69H3.29A9.74 9.74 0 0 0 2.25 12c0 1.56.37 3.04 1.04 4.31l3.24-2.53Z" />
+                        <path fill="#EA4335" d="M12 6.19c1.43 0 2.72.49 3.73 1.45l2.8-2.8C16.83 3.27 14.63 2.3 12 2.3a9.74 9.74 0 0 0-8.71 5.39l3.24 2.53c.77-2.31 2.93-4.03 5.47-4.03Z" />
                     </svg>
                     <span>Continue with Google</span>
                 </button>
@@ -1056,7 +1968,7 @@
     <div id="payment-modal" class="custom-modal">
         <div class="modal-box" id="payment-box">
             <span class="close-modal-btn" onclick="closeModals()" style="color: inherit;">&times;</span>
-            
+
             <div id="pay-step-1" class="payment-step active">
                 <h3 style="margin-bottom: 20px;">Automated Checkout</h3>
                 <p style="color: var(--text-secondary); font-size: 0.9rem;">Select your preferred payment method</p>
@@ -1072,7 +1984,7 @@
 
             <div id="pay-step-2" class="payment-step">
                 <img id="gateway-logo" src="" alt="Gateway" style="width: 100px; margin: 0 auto 15px auto; display: block;">
-                
+
                 <div style="background: rgba(0,0,0,0.15); padding: 15px; border-radius: var(--radius-md); margin-bottom: 20px; text-align: center;">
                     <p style="font-size: 0.9rem; margin-bottom: 5px;">Merchant Account</p>
                     <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
@@ -1085,12 +1997,12 @@
                     </p>
                     <div id="pay-discount-note" style="display:none; margin-top:8px; font-size:0.8rem; font-weight:700;">Previous buyer discount applied</div>
                 </div>
-                
+
                 <div id="pay-inputs">
                     <input type="number" id="sender-number-field" class="pay-input" placeholder="Sender Account Number">
                     <input type="text" id="trx-id-field" class="pay-input" placeholder="Transaction ID (TrxID)">
                 </div>
-                
+
                 <button class="btn-primary" style="width: 100%; margin-top: 15px; background: #fff; color: #333;" id="pay-proceed-btn" onclick="processPayment()">Verify Payment</button>
             </div>
 
@@ -1117,6 +2029,23 @@
         </div>
     </div>
 
+    <!-- CATEGORY DIALOG (content comes from Firestore: settings/categoryDialogs & settings/site) -->
+    <div id="cat-dialog-overlay" class="cat-dialog-overlay" onclick="if(event.target===this) closeCategoryDialog()">
+        <div class="cat-dialog" role="dialog" aria-modal="true" aria-labelledby="cat-dialog-title">
+            <button class="cat-dialog-close" onclick="closeCategoryDialog()" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+            <div class="cat-dialog-brand">
+                <div class="cat-dialog-logo" id="cat-dialog-logo"><i class="fa-solid fa-layer-group"></i></div>
+                <div class="cat-dialog-site" id="cat-dialog-site">App Vault</div>
+            </div>
+            <div class="cat-dialog-divider"></div>
+            <h3 class="cat-dialog-title" id="cat-dialog-title"></h3>
+            <p class="cat-dialog-desc" id="cat-dialog-desc"></p>
+            <button class="cat-dialog-btn" id="cat-dialog-btn" onclick="categoryDialogAction()">
+                <span id="cat-dialog-btn-text">Continue</span> <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
+    </div>
+
     <!-- Template for App Cards -->
     <template id="app-card-template">
         <div class="app-card" onclick="openAppDetails(this)">
@@ -1140,14 +2069,14 @@
            JAVASCRIPT LOGIC
            ======================== */
 
-        let appsData = []; 
+        let appsData = [];
         let currentUser = null;
         let currentTheme = localStorage.getItem('theme') || 'light';
-        let isSignUpMode = false; 
-        
+        let isSignUpMode = false;
+
         let currentAppForAction = null;
         let currentPayMethod = '';
-        let currentSelectedRating = 0; 
+        let currentSelectedRating = 0;
         let pendingTransactionUnsubscribe = null;
         let approvalDownloadStarted = false;
         let currentAppPurchaseState = null;
@@ -1220,7 +2149,9 @@
                 if (typeof left === 'number' && typeof right === 'number') {
                     if (left !== right) return left > right ? 1 : -1;
                 } else {
-                    const result = String(left).localeCompare(String(right), undefined, { numeric: true });
+                    const result = String(left).localeCompare(String(right), undefined, {
+                        numeric: true
+                    });
                     if (result !== 0) return result > 0 ? 1 : -1;
                 }
             }
@@ -1279,10 +2210,18 @@
 
         async function refreshUserEntitlements() {
             if (!currentUser) {
-                userEntitlements = { downloads: new Map(), purchases: new Map() };
+                userEntitlements = {
+                    downloads: new Map(),
+                    purchases: new Map()
+                };
                 return;
             }
-            const { collection, getDocs, query, where } = window.firestoreDB;
+            const {
+                collection,
+                getDocs,
+                query,
+                where
+            } = window.firestoreDB;
             const downloads = new Map();
             const purchases = new Map();
             try {
@@ -1306,11 +2245,14 @@
             } catch (error) {
                 console.error("Purchase entitlement error:", error);
             }
-            userEntitlements = { downloads, purchases };
+            userEntitlements = {
+                downloads,
+                purchases
+            };
             if (appsData.length) applySorting();
         }
 
-        if(window.innerWidth <= 480) {
+        if (window.innerWidth <= 480) {
             document.querySelector('.mobile-header-wrapper').style.display = "flex";
             document.querySelector('.mobile-header-wrapper').style.flexDirection = "row";
             document.querySelector('.mobile-header-wrapper').style.flexWrap = "wrap";
@@ -1324,7 +2266,8 @@
             setupNavigation();
             setupSearch();
             setupAuthListeners();
-            fetchAppsFromFirebase(); 
+            fetchAppsFromFirebase();
+            listenCategoryDialogs();
         });
 
         // --- THEME ---
@@ -1338,6 +2281,7 @@
             localStorage.setItem('theme', currentTheme);
             updateThemeBtn();
         });
+
         function updateThemeBtn() {
             DOM.themeBtn.innerHTML = currentTheme === 'light' ? '<i class="fa-solid fa-moon"></i> Dark Mode' : '<i class="fa-solid fa-sun"></i> Light Mode';
         }
@@ -1345,29 +2289,35 @@
         // --- VIEW ROUTING ---
         window.switchView = function(viewId) {
             document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
-            
+
             if (viewId === 'profile' && !currentUser) {
                 document.getElementById('auth-view').classList.remove('hidden');
                 return;
             }
-            
+
             document.getElementById(`${viewId}-view`).classList.remove('hidden');
             window.scrollTo(0, 0);
 
-            if(viewId === 'profile') loadUserProfileData();
+            if (viewId === 'profile') loadUserProfileData();
         };
 
         // --- FIREBASE DATA FETCHING ---
         function fetchAppsFromFirebase() {
-            const { collection, onSnapshot } = window.firestoreDB;
+            const {
+                collection,
+                onSnapshot
+            } = window.firestoreDB;
             const appsRef = collection(window.firebaseDb, "apps");
 
             onSnapshot(appsRef, (snapshot) => {
                 appsData = [];
                 snapshot.forEach((doc) => {
-                    appsData.push({ id: doc.id, ...doc.data() });
+                    appsData.push({
+                        id: doc.id,
+                        ...doc.data()
+                    });
                 });
-                applySorting(); 
+                applySorting();
             }, (error) => {
                 console.error("Error fetching apps:", error);
             });
@@ -1378,19 +2328,19 @@
             const sortVal = document.getElementById('sort-select').value;
             const activeCatBtn = document.querySelector('.cat-btn.active');
             const category = activeCatBtn ? activeCatBtn.getAttribute('data-category') : 'all';
-            
+
             let filtered = category === 'all' ? [...appsData] : appsData.filter(a => a.category === category);
-            
+
             const query = DOM.searchInput.value.toLowerCase();
-            if(query) {
+            if (query) {
                 filtered = filtered.filter(app => (app.title && app.title.toLowerCase().includes(query)) || (app.category && app.category.toLowerCase().includes(query)));
             }
 
-            if(sortVal === 'newest') filtered.sort((a,b) => (b.createdAt?.toMillis()||0) - (a.createdAt?.toMillis()||0));
-            else if(sortVal === 'popular') filtered.sort((a,b) => (b.realDownloadCount||0) - (a.realDownloadCount||0));
-            else if(sortVal === 'rating') filtered.sort((a,b) => (b.rating||0) - (a.rating||0));
-            else if(sortVal === 'price_asc') filtered.sort((a,b) => (a.price||0) - (b.price||0));
-            else if(sortVal === 'price_desc') filtered.sort((a,b) => (b.price||0) - (a.price||0));
+            if (sortVal === 'newest') filtered.sort((a, b) => (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0));
+            else if (sortVal === 'popular') filtered.sort((a, b) => (b.realDownloadCount || 0) - (a.realDownloadCount || 0));
+            else if (sortVal === 'rating') filtered.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+            else if (sortVal === 'price_asc') filtered.sort((a, b) => (a.price || 0) - (b.price || 0));
+            else if (sortVal === 'price_desc') filtered.sort((a, b) => (b.price || 0) - (a.price || 0));
 
             renderApps(filtered);
         };
@@ -1419,12 +2369,12 @@
             data.forEach((app) => {
                 const clone = template.content.cloneNode(true);
                 const card = clone.querySelector('.app-card');
-                
+
                 card.setAttribute('data-id', app.id);
                 clone.querySelector('.app-title').textContent = app.title || 'Unknown App';
                 clone.querySelector('.app-category').textContent = app.category ? app.category.toUpperCase() : 'APP';
                 clone.querySelector('.rating-val').textContent = app.rating ? parseFloat(app.rating).toFixed(1) : '0.0';
-                
+
                 const iconContainer = clone.querySelector('.app-icon');
                 if (app.iconUrl) {
                     iconContainer.innerHTML = `<img src="${app.iconUrl}" alt="icon" style="width:100%; height:100%; border-radius:inherit; object-fit:cover;">`;
@@ -1444,24 +2394,26 @@
                     btn.style.background = 'rgba(124, 58, 237, 0.1)';
                     btn.style.color = '#7c3aed';
                 }
-                
+
                 if (app.category === 'premium') {
                     btn.classList.add('btn-premium');
                     if (versionBadgeText !== 'UPDATE') btn.textContent = 'Premium';
-                    
-                    if(app.price && parseInt(app.price) > 0) {
+
+                    if (app.price && parseInt(app.price) > 0) {
                         priceBadge.textContent = `৳${app.price}`;
                         priceBadge.style.display = 'block';
                     }
                 } else if (app.category === 'source') {
                     btn.textContent = 'Code';
+                } else if (app.category === 'panel') {
+                    btn.textContent = 'Panel';
                 }
 
                 DOM.grid.appendChild(clone.cloneNode(true));
                 if (app.featured) DOM.carousel.appendChild(card);
             });
-            
-            if(DOM.carousel.children.length === 0) {
+
+            if (DOM.carousel.children.length === 0) {
                 featuredTitle.style.display = 'none';
                 featuredContainer.style.display = 'none';
             } else {
@@ -1476,33 +2428,120 @@
                 btn.addEventListener('click', (e) => {
                     document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
                     e.target.classList.add('active');
-                    
+
                     const category = e.target.getAttribute('data-category');
                     const gridTitle = document.getElementById('grid-title');
                     const sortSelect = document.getElementById('sort-select');
 
                     // 1. DYNAMIC TITLE SETTING
-                    if(category === 'all') gridTitle.textContent = "Explore All";
-                    else if(category === 'apps') gridTitle.textContent = "Apps";
-                    else if(category === 'games') gridTitle.textContent = "Games";
-                    else if(category === 'premium') gridTitle.textContent = "Premium Content";
-                    else if(category === 'source') gridTitle.textContent = "Source Codes";
+                    if (category === 'all') gridTitle.textContent = "Explore All";
+                    else if (category === 'apps') gridTitle.textContent = "Apps";
+                    else if (category === 'games') gridTitle.textContent = "Games";
+                    else if (category === 'panel') gridTitle.textContent = "Panels";
+                    else if (category === 'premium') gridTitle.textContent = "Premium Content";
+                    else if (category === 'source') gridTitle.textContent = "Source Codes";
 
                     // 2. SHOW/HIDE DROPDOWN BASED ON CATEGORY
-                    if(category === 'apps' || category === 'games') {
+                    if (category === 'apps' || category === 'games') {
                         sortSelect.style.display = 'none';
                     } else {
                         sortSelect.style.display = 'block';
                     }
 
-                    applySorting(); 
+                    applySorting();
+                    showCategoryDialog(category);
                 });
             });
         }
 
+        // ========================
+        // CATEGORY DIALOG LOGIC
+        // ========================
+        let categoryDialogs = {};
+        let siteBrand = {
+            siteName: '',
+            logoUrl: ''
+        };
+        let activeDialogLink = '';
+
+        function safeUrl(u) {
+            try {
+                const url = new URL(String(u || '').trim(), location.href);
+                return (url.protocol === 'http:' || url.protocol === 'https:' || url.protocol === 'tg:') ? url.href : '';
+            } catch (e) {
+                return '';
+            }
+        }
+
+        function listenCategoryDialogs() {
+            const {
+                doc,
+                onSnapshot
+            } = window.firestoreDB;
+            onSnapshot(doc(window.firebaseDb, "settings", "categoryDialogs"), (snap) => {
+                categoryDialogs = snap.exists() ? snap.data() : {};
+            }, (e) => console.warn("Category dialogs not available:", e));
+            onSnapshot(doc(window.firebaseDb, "settings", "site"), (snap) => {
+                siteBrand = snap.exists() ? snap.data() : {
+                    siteName: '',
+                    logoUrl: ''
+                };
+            }, (e) => console.warn("Site settings not available:", e));
+        }
+
+        function showCategoryDialog(category) {
+            const cfg = categoryDialogs[category];
+            if (!cfg || cfg.enabled !== true) return;
+            if (!cfg.title && !cfg.description) return;
+            if (cfg.showOnce && sessionStorage.getItem('catDialogSeen_' + category)) return;
+            if (cfg.showOnce) sessionStorage.setItem('catDialogSeen_' + category, '1');
+
+            const logoBox = document.getElementById('cat-dialog-logo');
+            const logo = safeUrl(siteBrand.logoUrl);
+            if (logo) {
+                logoBox.innerHTML = '';
+                const img = document.createElement('img');
+                img.src = logo;
+                img.alt = 'logo';
+                img.onerror = () => {
+                    logoBox.innerHTML = '<i class="fa-solid fa-layer-group"></i>';
+                };
+                logoBox.appendChild(img);
+            } else {
+                logoBox.innerHTML = '<i class="fa-solid fa-layer-group"></i>';
+            }
+
+            document.getElementById('cat-dialog-site').textContent = siteBrand.siteName || 'App Vault';
+            document.getElementById('cat-dialog-title').textContent = cfg.title || '';
+            document.getElementById('cat-dialog-desc').textContent = cfg.description || '';
+
+            activeDialogLink = safeUrl(cfg.buttonUrl);
+            document.getElementById('cat-dialog-btn-text').textContent = cfg.buttonText || (activeDialogLink ? 'Open' : 'Got it');
+
+            const overlay = document.getElementById('cat-dialog-overlay');
+            overlay.classList.remove('closing');
+            overlay.classList.add('show');
+        }
+
+        window.closeCategoryDialog = function() {
+            const overlay = document.getElementById('cat-dialog-overlay');
+            if (!overlay.classList.contains('show')) return;
+            overlay.classList.add('closing');
+            setTimeout(() => overlay.classList.remove('show', 'closing'), 220);
+        };
+
+        window.categoryDialogAction = function() {
+            if (activeDialogLink) window.open(activeDialogLink, '_blank', 'noopener');
+            closeCategoryDialog();
+        };
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeCategoryDialog();
+        });
+
         function setupSearch() {
             DOM.searchInput.addEventListener('input', () => {
-                applySorting(); 
+                applySorting();
             });
         }
 
@@ -1510,15 +2549,15 @@
         window.openAppDetails = async function(element) {
             const appId = element.getAttribute('data-id');
             const app = appsData.find(a => a.id === appId);
-            if(!app) return;
+            if (!app) return;
 
             const buildScreenshotHTML = (urls) => {
-                if(!urls || urls.length === 0) return `<div class="screenshot-img"><i class="fa-regular fa-image"></i></div><div class="screenshot-img"><i class="fa-regular fa-image"></i></div>`;
+                if (!urls || urls.length === 0) return `<div class="screenshot-img"><i class="fa-regular fa-image"></i></div><div class="screenshot-img"><i class="fa-regular fa-image"></i></div>`;
                 return urls.map(url => `<img src="${url}" class="screenshot-img" alt="Screenshot">`).join('');
             };
 
             let finalScreenshotsHTML = '';
-            if(app.adminScreenshots && app.adminScreenshots.length > 0) {
+            if (app.adminScreenshots && app.adminScreenshots.length > 0) {
                 finalScreenshotsHTML = `
                     <div class="screenshots-section">
                         <h3>User Panel Screenshots</h3>
@@ -1538,9 +2577,9 @@
                 `;
             }
 
-            const iconHTML = app.iconUrl 
-                ? `<img src="${app.iconUrl}" class="details-icon-large" alt="${app.title}">`
-                : `<div class="details-icon-large"><i class="fa-solid fa-mobile-screen"></i></div>`;
+            const iconHTML = app.iconUrl ?
+                `<img src="${app.iconUrl}" class="details-icon-large" alt="${app.title}">` :
+                `<div class="details-icon-large"><i class="fa-solid fa-mobile-screen"></i></div>`;
 
             let actionBtnHTML = '';
             let purchaseState = {
@@ -1562,10 +2601,15 @@
             }
             if (currentUser && app.category === 'premium') {
                 try {
-                    const { collection, query, where, getDocs } = window.firestoreDB;
-                    const q = query(collection(window.firebaseDb, "transactions"), 
-                                    where("userId", "==", currentUser.uid), 
-                                    where("appId", "==", app.id));
+                    const {
+                        collection,
+                        query,
+                        where,
+                        getDocs
+                    } = window.firestoreDB;
+                    const q = query(collection(window.firebaseDb, "transactions"),
+                        where("userId", "==", currentUser.uid),
+                        where("appId", "==", app.id));
                     const querySnapshot = await getDocs(q);
                     const approvedTransactions = [];
                     querySnapshot.forEach(item => {
@@ -1573,7 +2617,10 @@
                     });
                     purchaseState.hasApprovedPurchase = approvedTransactions.length > 0;
 
-                    const { doc, getDoc } = window.firestoreDB;
+                    const {
+                        doc,
+                        getDoc
+                    } = window.firestoreDB;
                     const downloadSnap = await getDoc(doc(window.firebaseDb, "users", currentUser.uid, "downloads", app.id));
                     const downloadRecord = downloadSnap.exists() ? downloadSnap.data() : null;
                     purchaseState.hasDownloaded = Boolean(downloadRecord);
@@ -1610,40 +2657,45 @@
                     if (purchaseState.hasApprovedPurchase && !purchaseState.hasCurrentPurchase) {
                         purchaseState.hasPreviousPurchase = true;
                     }
-                } catch(e) { console.error("Purchase check error", e); }
+                } catch (e) {
+                    console.error("Purchase check error", e);
+                }
             }
             currentAppPurchaseState = purchaseState;
             const pricing = getAppPricing(app, purchaseState);
             const updateBadgeText = getUpdateBadgeText(app, userEntitlements.downloads.get(app.id));
-            const detailsBadgeHTML = updateBadgeText
-                ? `<span class="update-kicker"><i class="fa-solid fa-sparkles"></i> ${updateBadgeText}</span>`
-                : '';
+            const detailsBadgeHTML = updateBadgeText ?
+                `<span class="update-kicker"><i class="fa-solid fa-sparkles"></i> ${updateBadgeText}</span>` :
+                '';
 
-            if(app.category === 'premium') {
-                if(purchaseState.hasCurrentPurchase) {
+            if (app.category === 'premium') {
+                if (purchaseState.hasCurrentPurchase) {
                     actionBtnHTML = `<button class="btn-primary btn-main-action" onclick="downloadAppById('${app.id}')"><i class="fa-solid fa-download"></i> Download Latest</button>`;
-                } else if(purchaseState.hasPreviousPurchase) {
+                } else if (purchaseState.hasPreviousPurchase) {
                     actionBtnHTML = `<button class="btn-primary btn-main-action update-action" style="background:linear-gradient(135deg,#7c3aed,#4f46e5);" onclick="openPaymentGateway('${app.id}')"><i class="fa-solid fa-arrows-rotate"></i> Update at 20% Off</button>`;
                 } else {
                     actionBtnHTML = `<button class="btn-primary btn-main-action" style="background:var(--premium-color);" onclick="openPaymentGateway('${app.id}')"><i class="fa-solid fa-cart-shopping"></i> Buy Premium</button>`;
                 }
-            } else if(app.category === 'source') {
+            } else if (app.category === 'source') {
                 actionBtnHTML = `<button class="btn-primary btn-main-action" onclick="downloadAppById('${app.id}')"><i class="fa-solid fa-${purchaseState.needsUpdate ? 'arrows-rotate' : 'download'}"></i> ${purchaseState.needsUpdate ? 'Update Source' : 'Download Source'}</button>`;
             } else {
                 actionBtnHTML = `<button class="btn-primary btn-main-action" onclick="downloadAppById('${app.id}')"><i class="fa-solid fa-${purchaseState.needsUpdate ? 'arrows-rotate' : 'download'}"></i> ${purchaseState.needsUpdate ? 'Update App' : 'Install App'}</button>`;
             }
 
             let favColor = "var(--text-secondary)";
-            if(currentUser) {
-                const { doc, getDoc } = window.firestoreDB;
+            if (currentUser) {
+                const {
+                    doc,
+                    getDoc
+                } = window.firestoreDB;
                 const favDoc = await getDoc(doc(window.firebaseDb, "users", currentUser.uid, "favorites", app.id));
-                if(favDoc.exists()) favColor = "#ef4444";
+                if (favDoc.exists()) favColor = "#ef4444";
             }
             actionBtnHTML += `<button class="btn-primary" style="background: transparent; color: ${favColor}; border: 1px solid var(--border-color); flex-grow: 0; padding: 14px 20px; font-size:1.3rem;" onclick="toggleFavorite('${app.id}', '${app.title}', '${app.iconUrl || ''}', this)"><i class="fa-solid fa-heart"></i></button>`;
 
             let similarHtml = '';
             let similarApps = appsData.filter(a => a.category === app.category && a.id !== app.id).slice(0, 15);
-            if(similarApps.length > 0) {
+            if (similarApps.length > 0) {
                 similarHtml = `
                 <div class="screenshots-section" style="margin-top: 40px;">
                     <h3>Similar Apps</h3>
@@ -1662,13 +2714,13 @@
             }
 
             let reviewsHtml = `<div class="screenshots-section" style="margin-top: 40px;" id="app-reviews-section"><h3>User Reviews</h3><p style="color:var(--text-secondary);">Loading reviews...</p></div>`;
-            const priceHTML = app.category === 'premium'
-                ? `<div class="details-price-card">
+            const priceHTML = app.category === 'premium' ?
+                `<div class="details-price-card">
                     <span class="details-price-label">${pricing.discountApplied ? 'Your update price' : 'One-time price'}</span>
                     <span class="details-price-current">৳${pricing.finalPrice}</span>
                     ${pricing.discountApplied ? `<span class="details-price-old">৳${pricing.originalPrice}</span><span class="discount-pill"><i class="fa-solid fa-tag"></i> 20% OFF</span>` : ''}
-                </div>`
-                : '';
+                </div>` :
+                '';
 
             DOM.detailsContainer.innerHTML = `
                 <div class="details-header">
@@ -1719,20 +2771,24 @@
             `;
 
             switchView('app-details');
-            loadAppReviews(app.id); 
+            loadAppReviews(app.id);
         };
 
         // --- PAYMENT GATEWAY LOGIC ---
         window.openPaymentGateway = function(appId) {
-            if(!currentUser) { alert("Please login to buy premium apps."); switchView('auth'); return; }
+            if (!currentUser) {
+                alert("Please login to buy premium apps.");
+                switchView('auth');
+                return;
+            }
             currentAppForAction = appsData.find(a => a.id === appId);
-            if(!currentAppForAction) return;
+            if (!currentAppForAction) return;
             approvalDownloadStarted = false;
             if (pendingTransactionUnsubscribe) {
                 pendingTransactionUnsubscribe();
                 pendingTransactionUnsubscribe = null;
             }
-            
+
             document.getElementById('payment-modal').style.display = 'flex';
             document.querySelectorAll('.payment-step').forEach(el => el.classList.remove('active'));
             document.getElementById('pay-step-1').classList.add('active');
@@ -1744,7 +2800,7 @@
             tempTextArea.value = numberToCopy;
             document.body.appendChild(tempTextArea);
             tempTextArea.select();
-            tempTextArea.setSelectionRange(0, 99999); 
+            tempTextArea.setSelectionRange(0, 99999);
             try {
                 document.execCommand("copy");
                 alert("Number copied!");
@@ -1775,7 +2831,7 @@
             }
             document.getElementById('sender-number-field').value = "";
             document.getElementById('trx-id-field').value = "";
-            
+
             document.querySelectorAll('.payment-step').forEach(el => el.classList.remove('active'));
             document.getElementById('pay-step-2').classList.add('active');
         };
@@ -1784,18 +2840,25 @@
             const senderNum = document.getElementById('sender-number-field').value.trim();
             const trxId = document.getElementById('trx-id-field').value.trim();
             const btn = document.getElementById('pay-proceed-btn');
-            
-            if(!senderNum || !trxId) { alert("Please enter Sender Number and TrxID!"); return; }
+
+            if (!senderNum || !trxId) {
+                alert("Please enter Sender Number and TrxID!");
+                return;
+            }
 
             btn.innerText = "Processing...";
             btn.disabled = true;
 
             try {
-                const { doc, setDoc, serverTimestamp } = window.firestoreDB;
+                const {
+                    doc,
+                    setDoc,
+                    serverTimestamp
+                } = window.firestoreDB;
                 const transId = "TRX" + Date.now();
                 const pricing = getAppPricing(currentAppForAction, currentAppPurchaseState);
                 const amount = pricing.finalPrice;
-                
+
                 await setDoc(doc(window.firebaseDb, "transactions", transId), {
                     userId: currentUser.uid,
                     userEmail: currentUser.email,
@@ -1818,11 +2881,13 @@
                 const botToken = "8969091717:AAE_G7fxopXWPmShzxilTU-2XvEJHC7kE1U";
                 const chatId = "6438545807";
                 const msg = `🚀 *New Order Pending!*\n\n📱 *App:* ${currentAppForAction.title || 'N/A'}\n📧 *User:* ${currentUser.email || 'N/A'}\n💰 *Amount:* ৳${amount}\n💳 *Method:* ${(currentPayMethod || 'N/A').toUpperCase()}\n📞 *Sender No:* ${senderNum}\n🆔 *TrxID:* ${trxId}\n\n⏳ Please check the Admin Panel to approve.`;
-                
+
                 const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
                 fetch(url, {
                     method: "POST",
-                    headers: { "Content-Type": "application/json" },
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
                     body: JSON.stringify({
                         chat_id: chatId,
                         text: msg,
@@ -1831,7 +2896,9 @@
                 }).catch(e => console.error("Telegram Error:", e));
                 // --- TELEGRAM NOTIFICATION SYSTEM END ---
 
-                const { onSnapshot } = window.firestoreDB;
+                const {
+                    onSnapshot
+                } = window.firestoreDB;
                 pendingTransactionUnsubscribe = onSnapshot(doc(window.firebaseDb, "transactions", transId), (docSnap) => {
                     if (docSnap.exists()) {
                         const data = docSnap.data();
@@ -1845,7 +2912,9 @@
                                 approvalDownloadStarted = true;
                                 alert("Payment Approved! আপনার অ্যাপটি জানালা হচ্ছে...");
                                 downloadAppById(currentAppForAction.id);
-                                openAppDetails({ getAttribute: () => currentAppForAction.id });
+                                openAppDetails({
+                                    getAttribute: () => currentAppForAction.id
+                                });
                             }
                         } else if (data.status === "rejected") {
                             if (pendingTransactionUnsubscribe) {
@@ -1871,49 +2940,60 @@
 
             document.querySelectorAll('.payment-step').forEach(el => el.classList.remove('active'));
             document.getElementById('pay-step-3').classList.add('active');
-            
+
             document.getElementById('payment-box').style.background = 'var(--surface-color)';
             document.getElementById('payment-box').style.color = 'var(--text-primary)';
 
             /* Keep the listener alive after the modal closes so approval can
                still trigger the download while the user remains on this page. */
-            setTimeout(() => { closeModals(); }, 5000);
+            setTimeout(() => {
+                closeModals();
+            }, 5000);
         };
 
         // --- NEW NOTIFICATION SYSTEM LOGIC ---
         window.openNotifications = async function() {
-            if(!currentUser) { alert("Please login to view notifications."); switchView('auth'); return; }
+            if (!currentUser) {
+                alert("Please login to view notifications.");
+                switchView('auth');
+                return;
+            }
             document.getElementById('notification-modal').style.display = 'flex';
-            
+
             const list = document.getElementById('notification-list');
             list.innerHTML = '<p style="text-align:center; color: var(--text-secondary); margin-top:20px;">Loading...</p>';
-            
+
             try {
-                const { collection, query, where, getDocs } = window.firestoreDB;
+                const {
+                    collection,
+                    query,
+                    where,
+                    getDocs
+                } = window.firestoreDB;
                 const q = query(collection(window.firebaseDb, "transactions"), where("userId", "==", currentUser.uid));
                 const snap = await getDocs(q);
-                
-                if(snap.empty) {
+
+                if (snap.empty) {
                     list.innerHTML = '<p style="color: var(--text-secondary); text-align: center; margin-top:20px;">No new notifications.</p>';
                     return;
                 }
-                
+
                 let docsArr = [];
                 snap.forEach(doc => docsArr.push(doc.data()));
-                
-                docsArr.sort((a,b) => {
+
+                docsArr.sort((a, b) => {
                     let timeA = a.timestamp ? a.timestamp.toMillis() : 0;
                     let timeB = b.timestamp ? b.timestamp.toMillis() : 0;
                     return timeB - timeA;
                 });
-                
+
                 let html = '';
                 docsArr.forEach(d => {
                     let color = d.status === 'approved' ? '#10b981' : (d.status === 'rejected' ? '#ef4444' : '#f59e0b');
                     let icon = d.status === 'approved' ? 'fa-circle-check' : (d.status === 'rejected' ? 'fa-circle-xmark' : 'fa-clock');
                     let msg = d.status === 'approved' ? 'has been approved. Ready to download!' : (d.status === 'rejected' ? 'was rejected.' : 'is pending verification.');
                     let dateStr = d.timestamp ? new Date(d.timestamp.toMillis()).toLocaleString() : 'N/A';
-                    
+
                     html += `
                     <div style="padding: 15px 0; border-bottom: 1px solid var(--border-color); display: flex; gap: 12px; align-items: start;">
                         <i class="fa-solid ${icon}" style="color: ${color}; font-size: 1.2rem; margin-top: 3px;"></i>
@@ -1924,7 +3004,7 @@
                     </div>`;
                 });
                 list.innerHTML = html;
-            } catch(e) {
+            } catch (e) {
                 console.error(e);
                 list.innerHTML = '<p style="color: var(--text-secondary); text-align: center; margin-top:20px;">Error loading notifications.</p>';
             }
@@ -1932,19 +3012,28 @@
 
         // --- AVATAR SELECTION LOGIC ---
         window.openAvatarSelection = async function() {
-            if(!currentUser) { alert("Please login first."); switchView('auth'); return; }
+            if (!currentUser) {
+                alert("Please login first.");
+                switchView('auth');
+                return;
+            }
             document.getElementById('avatar-modal').style.display = 'flex';
             const grid = document.getElementById('avatar-grid');
             grid.innerHTML = '<p style="color:var(--text-secondary); grid-column:1/-1; text-align:center;">Loading avatars...</p>';
 
             let avatarsToUse = defaultAvatars;
             try {
-                const { doc, getDoc } = window.firestoreDB;
+                const {
+                    doc,
+                    getDoc
+                } = window.firestoreDB;
                 const snap = await getDoc(doc(window.firebaseDb, "settings", "avatars"));
-                if(snap.exists() && snap.data().urlList && snap.data().urlList.length > 0) {
+                if (snap.exists() && snap.data().urlList && snap.data().urlList.length > 0) {
                     avatarsToUse = snap.data().urlList;
                 }
-            } catch(e) { console.log(e); }
+            } catch (e) {
+                console.log(e);
+            }
 
             grid.innerHTML = avatarsToUse.map(url => `
                 <img src="${url}" onclick="selectAvatar('${url}')" style="width: 75px; height: 75px; border-radius: 50%; object-fit: cover; cursor: pointer; border: 3px solid transparent; transition: var(--transition); box-shadow: var(--shadow-sm);" onmouseover="this.style.borderColor='var(--primary-color)'; this.style.transform='scale(1.05)';" onmouseout="this.style.borderColor='transparent'; this.style.transform='scale(1)';">
@@ -1952,42 +3041,57 @@
         };
 
         window.selectAvatar = async function(url) {
-            if(!currentUser) return;
+            if (!currentUser) return;
             document.getElementById('profile-avatar-img').src = url;
             document.getElementById('profile-avatar-img').style.display = 'block';
             document.getElementById('profile-avatar-icon').style.display = 'none';
             closeModals();
             try {
-                const { doc, setDoc } = window.firestoreDB;
-                await setDoc(doc(window.firebaseDb, "users", currentUser.uid), { photoUrl: url }, { merge: true });
+                const {
+                    doc,
+                    setDoc
+                } = window.firestoreDB;
+                await setDoc(doc(window.firebaseDb, "users", currentUser.uid), {
+                    photoUrl: url
+                }, {
+                    merge: true
+                });
                 alert("Profile picture updated!");
-            } catch(err) { console.error(err); }
+            } catch (err) {
+                console.error(err);
+            }
         };
 
         // --- RATING & REVIEWS SYSTEM LOGIC WITH EDIT/DELETE ---
         window.loadAppReviews = async function(appId) {
             const reviewsContainer = document.getElementById('app-reviews-section');
-            if(!reviewsContainer) return;
+            if (!reviewsContainer) return;
             try {
-                const { collection, getDocs } = window.firestoreDB;
+                const {
+                    collection,
+                    getDocs
+                } = window.firestoreDB;
                 const snap = await getDocs(collection(window.firebaseDb, "apps", appId, "reviews"));
-                if(snap.empty) {
+                if (snap.empty) {
                     reviewsContainer.innerHTML = `<h3>User Reviews</h3><p style="color:var(--text-secondary);">No reviews yet. Be the first to review!</p>`;
                     return;
                 }
                 let revArr = [];
-                snap.forEach(d => revArr.push({ id: d.id, ...d.data() }));
-                revArr.sort((a,b) => b.timestamp - a.timestamp);
-                
+                snap.forEach(d => revArr.push({
+                    id: d.id,
+                    ...d.data()
+                }));
+                revArr.sort((a, b) => b.timestamp - a.timestamp);
+
                 let html = `<h3>User Reviews</h3>`;
                 revArr.forEach(rev => {
                     let starsHtml = '';
-                    for(let i=1; i<=5; i++) {
+                    for (let i = 1; i <= 5; i++) {
                         starsHtml += i <= rev.rating ? '<i class="fa-solid fa-star"></i>' : '<i class="fa-regular fa-star" style="color:var(--text-secondary);"></i>';
                     }
-                    
+
                     let myActions = '';
-                    if(currentUser && rev.id === currentUser.uid) {
+                    if (currentUser && rev.id === currentUser.uid) {
                         let safeText = rev.text ? rev.text.replace(/'/g, "\\'") : '';
                         myActions = `
                         <div class="review-actions">
@@ -1999,25 +3103,31 @@
                     html += `
                     <div class="review-box">
                         <div class="review-header">
-                            ${rev.userPhoto ? `<img src="${rev.userPhoto}" class="review-avatar">` : `<div class="review-avatar"><i class="fa-solid fa-user"></i></div>`}
+                            ${rev.userPhoto ? `<img src="${esc(rev.userPhoto)}" class="review-avatar">` : `<div class="review-avatar"><i class="fa-solid fa-user"></i></div>`}
                             <div>
-                                <div class="review-name">${rev.userName || 'User'}</div>
+                                <div class="review-name">${esc(rev.userName || 'User')}
                                 <div class="review-date">${new Date(rev.timestamp).toLocaleDateString()}</div>
                             </div>
                             <div class="review-rating" style="margin-left:auto;">${starsHtml}</div>
                         </div>
-                        ${rev.text ? `<div class="review-text">${rev.text}</div>` : ''}
+                        ${rev.text ? `<div class="review-text">${esc(rev.text)}</div>` : ''}
                         ${myActions}
                     </div>`;
                 });
                 reviewsContainer.innerHTML = html;
-            } catch(e) { console.error(e); }
+            } catch (e) {
+                console.error(e);
+            }
         };
 
         window.openRatingModal = function(appId) {
-            if(!currentUser) { alert("Please login to write a review."); switchView('auth'); return; }
+            if (!currentUser) {
+                alert("Please login to write a review.");
+                switchView('auth');
+                return;
+            }
             currentAppForAction = appsData.find(a => a.id === appId);
-            if(!currentAppForAction) return;
+            if (!currentAppForAction) return;
 
             document.getElementById('rating-modal').style.display = 'flex';
             document.getElementById('rating-modal-title').textContent = "Rate & Review";
@@ -2032,7 +3142,7 @@
 
         window.editMyReview = function(appId, rating, text) {
             currentAppForAction = appsData.find(a => a.id === appId);
-            if(!currentAppForAction) return;
+            if (!currentAppForAction) return;
 
             document.getElementById('rating-modal').style.display = 'flex';
             document.getElementById('rating-modal-title').textContent = "Edit Review";
@@ -2042,37 +3152,48 @@
         };
 
         window.deleteMyReview = async function(appId, oldRating) {
-            if(!confirm("Are you sure you want to delete your review?")) return;
+            if (!confirm("Are you sure you want to delete your review?")) return;
 
             try {
-                const { doc, deleteDoc, getDoc, updateDoc } = window.firestoreDB;
+                const {
+                    doc,
+                    deleteDoc,
+                    getDoc,
+                    updateDoc
+                } = window.firestoreDB;
                 await deleteDoc(doc(window.firebaseDb, "apps", appId, "reviews", currentUser.uid));
                 await deleteDoc(doc(window.firebaseDb, "users", currentUser.uid, "ratings", appId));
 
                 const appRef = doc(window.firebaseDb, "apps", appId);
                 const appSnap = await getDoc(appRef);
-                if(appSnap.exists()) {
+                if (appSnap.exists()) {
                     let currentTotal = appSnap.data().ratingSum || 0;
                     let count = appSnap.data().ratingCount || 0;
-                    
+
                     let newTotal = currentTotal - oldRating;
                     let newCount = count - 1;
-                    if(newCount < 0) newCount = 0;
-                    if(newTotal < 0) newTotal = 0;
-                    
+                    if (newCount < 0) newCount = 0;
+                    if (newTotal < 0) newTotal = 0;
+
                     let newAvg = newCount === 0 ? 0 : newTotal / newCount;
-                    await updateDoc(appRef, { ratingSum: newTotal, ratingCount: newCount, rating: parseFloat(newAvg.toFixed(1)) });
+                    await updateDoc(appRef, {
+                        ratingSum: newTotal,
+                        ratingCount: newCount,
+                        rating: parseFloat(newAvg.toFixed(1))
+                    });
                 }
 
                 alert("Review deleted successfully!");
                 loadAppReviews(appId);
-            } catch(e) { console.error("Delete Review Error:", e); }
+            } catch (e) {
+                console.error("Delete Review Error:", e);
+            }
         };
 
         window.selectRating = function(val) {
             currentSelectedRating = val;
             document.querySelectorAll('.stars-container i').forEach(star => {
-                if(parseInt(star.getAttribute('data-value')) <= val) {
+                if (parseInt(star.getAttribute('data-value')) <= val) {
                     star.classList.add('active');
                     star.style.color = '#f59e0b';
                 } else {
@@ -2083,18 +3204,26 @@
         };
 
         window.submitReview = async function() {
-            if(currentSelectedRating === 0) { alert("Please select a star rating first!"); return; }
+            if (currentSelectedRating === 0) {
+                alert("Please select a star rating first!");
+                return;
+            }
             const reviewText = document.getElementById('review-text-input').value.trim();
             const val = currentSelectedRating;
-            
+
             closeModals();
             try {
-                const { doc, setDoc, getDoc, updateDoc } = window.firestoreDB;
-                
+                const {
+                    doc,
+                    setDoc,
+                    getDoc,
+                    updateDoc
+                } = window.firestoreDB;
+
                 let userName = "User";
                 let userPhoto = "";
                 const userSnap = await getDoc(doc(window.firebaseDb, "users", currentUser.uid));
-                if(userSnap.exists()) {
+                if (userSnap.exists()) {
                     userName = userSnap.data().name || "User";
                     userPhoto = userSnap.data().photoUrl || "";
                 }
@@ -2105,36 +3234,49 @@
                 let oldRating = isEdit ? existingRev.data().rating : 0;
 
                 await setDoc(reviewRef, {
-                    userName: userName, userPhoto: userPhoto, rating: val, text: reviewText, timestamp: Date.now()
+                    userName: userName,
+                    userPhoto: userPhoto,
+                    rating: val,
+                    text: reviewText,
+                    timestamp: Date.now()
                 });
 
                 await setDoc(doc(window.firebaseDb, "users", currentUser.uid, "ratings", currentAppForAction.id), {
-                    appTitle: currentAppForAction.title, iconUrl: currentAppForAction.iconUrl || '', rating: val, timestamp: Date.now()
+                    appTitle: currentAppForAction.title,
+                    iconUrl: currentAppForAction.iconUrl || '',
+                    rating: val,
+                    timestamp: Date.now()
                 });
 
                 const appRef = doc(window.firebaseDb, "apps", currentAppForAction.id);
                 const appSnap = await getDoc(appRef);
-                if(appSnap.exists()) {
+                if (appSnap.exists()) {
                     let currentTotal = appSnap.data().ratingSum || 0;
                     let count = appSnap.data().ratingCount || 0;
-                    
+
                     let newTotal, newCount;
 
-                    if(isEdit) {
+                    if (isEdit) {
                         newTotal = currentTotal - oldRating + val;
-                        newCount = count; 
+                        newCount = count;
                     } else {
                         newTotal = currentTotal + val;
                         newCount = count + 1;
                     }
-                    
+
                     let newAvg = newTotal / newCount;
-                    await updateDoc(appRef, { ratingSum: newTotal, ratingCount: newCount, rating: parseFloat(newAvg.toFixed(1)) });
+                    await updateDoc(appRef, {
+                        ratingSum: newTotal,
+                        ratingCount: newCount,
+                        rating: parseFloat(newAvg.toFixed(1))
+                    });
                 }
 
                 alert(isEdit ? "Review updated!" : "Thanks for your review!");
                 loadAppReviews(currentAppForAction.id);
-            } catch(e) { console.error("Rating Error:", e); }
+            } catch (e) {
+                console.error("Rating Error:", e);
+            }
         };
 
         window.closeModals = function() {
@@ -2170,9 +3312,9 @@
                 return;
             }
             document.getElementById('edit-name-input').value =
-                document.getElementById('profile-display-name').textContent === 'My Account'
-                    ? (currentUser.displayName || '')
-                    : document.getElementById('profile-display-name').textContent;
+                document.getElementById('profile-display-name').textContent === 'My Account' ?
+                (currentUser.displayName || '') :
+                document.getElementById('profile-display-name').textContent;
             document.getElementById('edit-email-input').value = currentUser.email || '';
             document.getElementById('edit-profile-modal').style.display = 'flex';
         };
@@ -2185,12 +3327,17 @@
                 return;
             }
             try {
-                const { doc, setDoc } = window.firestoreDB;
+                const {
+                    doc,
+                    setDoc
+                } = window.firestoreDB;
                 await setDoc(doc(window.firebaseDb, "users", currentUser.uid), {
                     name,
                     email: currentUser.email || '',
                     updatedAt: Date.now()
-                }, { merge: true });
+                }, {
+                    merge: true
+                });
                 document.getElementById('profile-display-name').textContent = name;
                 closeModals();
                 alert("Profile updated successfully.");
@@ -2201,18 +3348,25 @@
         };
 
         async function loadUserProfileData() {
-            if(!currentUser) return;
-            const { collection, getDocs, query, where, doc, getDoc } = window.firestoreDB;
+            if (!currentUser) return;
+            const {
+                collection,
+                getDocs,
+                query,
+                where,
+                doc,
+                getDoc
+            } = window.firestoreDB;
             await refreshUserEntitlements();
-            
+
             try {
                 const uDoc = await getDoc(doc(window.firebaseDb, "users", currentUser.uid));
-                if(uDoc.exists() && uDoc.data().photoUrl) {
+                if (uDoc.exists() && uDoc.data().photoUrl) {
                     document.getElementById('profile-avatar-img').src = uDoc.data().photoUrl;
                     document.getElementById('profile-avatar-img').style.display = 'block';
                     document.getElementById('profile-avatar-icon').style.display = 'none';
                 }
-            } catch(e) {}
+            } catch (e) {}
 
             document.getElementById('profile-purchase-count').textContent = userEntitlements.purchases.size;
             document.getElementById('profile-download-count').textContent = userEntitlements.downloads.size;
@@ -2220,15 +3374,15 @@
             try {
                 const transSnap = await getDocs(query(collection(window.firebaseDb, "transactions"), where("userId", "==", currentUser.uid)));
                 let transHtml = '';
-                
+
                 let transArr = [];
                 transSnap.forEach(d => transArr.push(d.data()));
-                transArr.sort((a,b) => (b.timestamp ? b.timestamp.toMillis() : 0) - (a.timestamp ? a.timestamp.toMillis() : 0));
-                
+                transArr.sort((a, b) => (b.timestamp ? b.timestamp.toMillis() : 0) - (a.timestamp ? a.timestamp.toMillis() : 0));
+
                 transArr.forEach(data => {
                     let date = data.timestamp ? new Date(data.timestamp.toMillis()).toLocaleDateString() : 'N/A';
                     let statusColor = data.status === 'approved' ? '#10b981' : (data.status === 'rejected' ? '#ef4444' : '#f59e0b');
-                    
+
                     transHtml += `
                     <div class="history-item">
                         <div class="history-item-left">
@@ -2247,7 +3401,9 @@
                 });
                 document.getElementById('tab-purchases').innerHTML = transHtml || '<p style="color: var(--text-secondary); text-align: center;">No purchases yet.</p>';
                 document.getElementById('profile-purchase-count').textContent = transArr.filter(item => item.status === 'approved').length;
-            } catch(e) { console.log(e); }
+            } catch (e) {
+                console.log(e);
+            }
 
             const downSnap = await getDocs(collection(window.firebaseDb, "users", currentUser.uid, "downloads"));
             let downHtml = '';
@@ -2303,20 +3459,36 @@
         }
 
         window.toggleFavorite = async function(appId, appTitle, iconUrl, btnElement) {
-            if(!currentUser) { alert("Please login to add favorites."); switchView('auth'); return; }
-            const { doc, setDoc, deleteDoc, getDoc } = window.firestoreDB;
+            if (!currentUser) {
+                alert("Please login to add favorites.");
+                switchView('auth');
+                return;
+            }
+            const {
+                doc,
+                setDoc,
+                deleteDoc,
+                getDoc
+            } = window.firestoreDB;
             const favRef = doc(window.firebaseDb, "users", currentUser.uid, "favorites", appId);
-            
+
             try {
                 const snap = await getDoc(favRef);
-                if(snap.exists()) {
+                if (snap.exists()) {
                     await deleteDoc(favRef);
                     btnElement.style.color = "var(--text-secondary)";
                 } else {
-                    await setDoc(favRef, { appId, appTitle, iconUrl, addedAt: Date.now() });
+                    await setDoc(favRef, {
+                        appId,
+                        appTitle,
+                        iconUrl,
+                        addedAt: Date.now()
+                    });
                     btnElement.style.color = "#ef4444";
                 }
-            } catch(e) { console.error(e); }
+            } catch (e) {
+                console.error(e);
+            }
         };
 
         window.downloadAppById = function(appId) {
@@ -2329,7 +3501,10 @@
         };
 
         window.downloadFile = async function(appId, url, title, iconUrl) {
-            if(!url || url === '#') { alert("Download link not available yet."); return; }
+            if (!url || url === '#') {
+                alert("Download link not available yet.");
+                return;
+            }
 
             /*
              * Use an anchor with the download attribute instead of window.open().
@@ -2349,9 +3524,16 @@
             downloadLink.remove();
 
             try {
-                const { doc, updateDoc, increment, setDoc } = window.firestoreDB;
-                await updateDoc(doc(window.firebaseDb, "apps", appId), { realDownloadCount: increment(1) });
-                if(currentUser) {
+                const {
+                    doc,
+                    updateDoc,
+                    increment,
+                    setDoc
+                } = window.firestoreDB;
+                await updateDoc(doc(window.firebaseDb, "apps", appId), {
+                    realDownloadCount: increment(1)
+                });
+                if (currentUser) {
                     await setDoc(doc(window.firebaseDb, "users", currentUser.uid, "downloads", appId), {
                         appId,
                         appTitle: title,
@@ -2362,11 +3544,18 @@
                     });
                     await refreshUserEntitlements();
                 }
-            } catch (error) { console.error("Error updating download record:", error); }
+            } catch (error) {
+                console.error("Error updating download record:", error);
+            }
         };
 
         async function saveUserToFirestore(user, name = "") {
-            const { doc, setDoc, getDoc, serverTimestamp } = window.firestoreDB;
+            const {
+                doc,
+                setDoc,
+                getDoc,
+                serverTimestamp
+            } = window.firestoreDB;
             const userRef = doc(window.firebaseDb, "users", user.uid);
             try {
                 const userSnap = await getDoc(userRef);
@@ -2377,12 +3566,23 @@
                         createdAt: serverTimestamp()
                     });
                 }
-            } catch (error) { console.error("Error saving user:", error); }
+            } catch (error) {
+                console.error("Error saving user:", error);
+            }
         }
 
         function setupAuthListeners() {
-            const { onAuthStateChanged, signInWithPopup, signInWithRedirect, getRedirectResult, google, signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword } = window.authProviders;
-            
+            const {
+                onAuthStateChanged,
+                signInWithPopup,
+                signInWithRedirect,
+                getRedirectResult,
+                google,
+                signOut,
+                signInWithEmailAndPassword,
+                createUserWithEmailAndPassword
+            } = window.authProviders;
+
             document.getElementById('toggle-auth').addEventListener('click', () => {
                 isSignUpMode = !isSignUpMode;
                 document.getElementById('auth-title').innerText = isSignUpMode ? "Create Account" : "Sign In";
@@ -2397,22 +3597,30 @@
                     currentUser = user;
                     refreshUserEntitlements();
                     document.getElementById('profile-email').textContent = user.email;
-                    
-                    const { doc, getDoc } = window.firestoreDB;
+
+                    const {
+                        doc,
+                        getDoc
+                    } = window.firestoreDB;
                     getDoc(doc(window.firebaseDb, "users", user.uid)).then(docSnap => {
-                        if(docSnap.exists() && docSnap.data().name) {
+                        if (docSnap.exists() && docSnap.data().name) {
                             document.getElementById('profile-display-name').textContent = docSnap.data().name;
                         } else {
                             document.getElementById('profile-display-name').textContent = "My Account";
                         }
-                    }).catch(e => { document.getElementById('profile-display-name').textContent = "My Account"; });
-                    
-                    if(document.getElementById('auth-view').classList.contains('hidden') === false) {
+                    }).catch(e => {
+                        document.getElementById('profile-display-name').textContent = "My Account";
+                    });
+
+                    if (document.getElementById('auth-view').classList.contains('hidden') === false) {
                         switchView('home');
                     }
                 } else {
                     currentUser = null;
-                    userEntitlements = { downloads: new Map(), purchases: new Map() };
+                    userEntitlements = {
+                        downloads: new Map(),
+                        purchases: new Map()
+                    };
                     applySorting();
                     document.getElementById('profile-email').textContent = 'Not logged in';
                     document.getElementById('profile-display-name').textContent = 'My Account';
@@ -2473,25 +3681,1713 @@
                 const email = document.getElementById('email-input').value.trim();
                 const pass = document.getElementById('password-input').value.trim();
                 const name = document.getElementById('name-input').value.trim();
-                
-                if(!email || !pass) return alert("Please enter email and password.");
-                
+
+                if (!email || !pass) return alert("Please enter email and password.");
+
                 try {
-                    if(isSignUpMode) {
-                        if(!name) return alert("Please enter your name.");
+                    if (isSignUpMode) {
+                        if (!name) return alert("Please enter your name.");
                         const cred = await createUserWithEmailAndPassword(window.firebaseAuth, email, pass);
                         await saveUserToFirestore(cred.user, name);
                         alert("Account created successfully!");
                     } else {
                         await signInWithEmailAndPassword(window.firebaseAuth, email, pass);
                     }
-                } catch (error) { alert("Error: " + error.message); }
+                } catch (error) {
+                    alert("Error: " + error.message);
+                }
             });
 
             document.getElementById('logout-btn').addEventListener('click', () => {
-                signOut(window.firebaseAuth).then(() => { switchView('home'); });
+                signOut(window.firebaseAuth).then(() => {
+                    switchView('home');
+                });
             });
         }
     </script>
+    <style>
+        /* 1. Glass header (আগের rgba(var()) বাগ ঠিক করা) */
+        .app-header {
+            background: color-mix(in srgb, var(--surface-color) 78%, transparent) !important
+        }
+
+        /* 2. Hero */
+        .hero {
+            position: relative;
+            overflow: hidden;
+            border-radius: 26px;
+            padding: 28px 26px;
+            margin-bottom: 26px;
+            color: #fff;
+            background: linear-gradient(135deg, #2563eb, #7c3aed 60%, #ec4899);
+            box-shadow: 0 18px 40px -14px rgba(79, 70, 229, .55)
+        }
+
+        .hero::before,
+        .hero::after {
+            content: "";
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .14);
+            pointer-events: none
+        }
+
+        .hero::before {
+            width: 220px;
+            height: 220px;
+            right: -70px;
+            top: -90px
+        }
+
+        .hero::after {
+            width: 140px;
+            height: 140px;
+            right: 60px;
+            bottom: -80px
+        }
+
+        .hero small {
+            opacity: .85;
+            font-weight: 600;
+            letter-spacing: .4px
+        }
+
+        .hero h1 {
+            font-size: 1.7rem;
+            margin: 4px 0 6px;
+            letter-spacing: -.5px
+        }
+
+        .hero p {
+            opacity: .9;
+            font-size: .92rem;
+            max-width: 460px
+        }
+
+        .hero-chips {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 14px;
+            position: relative;
+            z-index: 1
+        }
+
+        .hero-chips span {
+            background: rgba(255, 255, 255, .2);
+            backdrop-filter: blur(6px);
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: .78rem;
+            font-weight: 700
+        }
+
+        /* 3. Card polish + staggered entrance */
+        .app-card {
+            animation: avIn .5s cubic-bezier(.2, .8, .2, 1) both
+        }
+
+        .app-card:nth-child(2) {
+            animation-delay: .05s
+        }
+
+        .app-card:nth-child(3) {
+            animation-delay: .1s
+        }
+
+        .app-card:nth-child(4) {
+            animation-delay: .15s
+        }
+
+        .app-card:nth-child(5) {
+            animation-delay: .2s
+        }
+
+        .app-card:nth-child(6) {
+            animation-delay: .25s
+        }
+
+        @keyframes avIn {
+            from {
+                opacity: 0;
+                transform: translateY(18px) scale(.97)
+            }
+
+            to {
+                opacity: 1;
+                transform: none
+            }
+        }
+
+        .app-card:active {
+            transform: scale(.97)
+        }
+
+        .app-card:hover .app-icon {
+            transform: scale(1.06) rotate(-2deg)
+        }
+
+        .app-icon {
+            transition: var(--transition)
+        }
+
+        .cat-btn.active {
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            border-color: transparent;
+            color: #fff
+        }
+
+        /* 4. Skeleton */
+        .sk {
+            border-radius: 20px;
+            height: 210px;
+            border: 1px solid var(--border-color);
+            background: linear-gradient(100deg, var(--surface-color) 30%, var(--bg-color) 50%, var(--surface-color) 70%);
+            background-size: 200% 100%;
+            animation: avSk 1.2s linear infinite
+        }
+
+        @keyframes avSk {
+            to {
+                background-position: -200% 0
+            }
+        }
+
+        /* 5. Recent + search chips */
+        .recent-row,
+        .chip-row {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            padding-bottom: 6px
+        }
+
+        .recent-row::-webkit-scrollbar,
+        .chip-row::-webkit-scrollbar {
+            display: none
+        }
+
+        .recent-row .compact-app-card {
+            flex: 0 0 240px;
+            width: 240px
+        }
+
+        .chip-row {
+            margin-bottom: 18px;
+            align-items: center
+        }
+
+        .chip-row b {
+            font-size: .78rem;
+            color: var(--text-secondary);
+            white-space: nowrap
+        }
+
+        .chip {
+            border: 1px solid var(--border-color);
+            background: var(--surface-color);
+            color: var(--text-primary);
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: .8rem;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: var(--transition)
+        }
+
+        .chip:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color)
+        }
+
+        /* 6. Toast */
+        #av-toasts {
+            position: fixed;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 90px;
+            z-index: 5000;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            align-items: center;
+            width: 92%;
+            max-width: 420px;
+            pointer-events: none
+        }
+
+        .av-toast {
+            pointer-events: auto;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            width: 100%;
+            padding: 13px 16px;
+            border-radius: 16px;
+            background: var(--text-primary);
+            color: var(--surface-color);
+            font-size: .9rem;
+            font-weight: 500;
+            box-shadow: 0 14px 30px -10px rgba(0, 0, 0, .5);
+            animation: avIn .35s ease both
+        }
+
+        .av-toast.out {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: .3s
+        }
+
+        .av-toast i {
+            font-size: 1.1rem
+        }
+
+        /* 7. Bottom nav (mobile) */
+        #av-nav {
+            display: none;
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1500;
+            padding: 8px 10px calc(8px + env(safe-area-inset-bottom, 0px));
+            background: color-mix(in srgb, var(--surface-color) 88%, transparent);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-top: 1px solid var(--border-color);
+            justify-content: space-around
+        }
+
+        #av-nav button {
+            flex: 1;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: .68rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 6px 0;
+            border-radius: 12px;
+            transition: var(--transition)
+        }
+
+        #av-nav button i {
+            font-size: 1.2rem
+        }
+
+        #av-nav button.on {
+            color: var(--primary-color)
+        }
+
+        #av-nav button.on i {
+            transform: translateY(-2px)
+        }
+
+        @media(max-width:768px) {
+            #av-nav {
+                display: flex
+            }
+
+            body {
+                padding-bottom: 78px
+            }
+
+            .hero {
+                padding: 22px 18px
+            }
+
+            .hero h1 {
+                font-size: 1.35rem
+            }
+        }
+
+        /* 8. Back to top + share */
+        #av-top {
+            position: fixed;
+            right: 16px;
+            bottom: 96px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            z-index: 1400;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: #fff;
+            box-shadow: 0 10px 22px -6px rgba(79, 70, 229, .6);
+            opacity: 0;
+            transform: scale(.6);
+            pointer-events: none;
+            transition: .3s
+        }
+
+        #av-top.show {
+            opacity: 1;
+            transform: none;
+            pointer-events: auto
+        }
+
+        .av-share {
+            background: transparent !important;
+            color: var(--text-primary) !important;
+            border: 1px solid var(--border-color) !important;
+            flex-grow: 0 !important;
+            padding: 14px 20px !important
+        }
+
+        @media(prefers-reduced-motion:reduce) {
+
+            .app-card,
+            .sk,
+            .av-toast {
+                animation: none !important
+            }
+        }
+    </style>
+
+    <div id="av-toasts"></div>
+    <button id="av-top" aria-label="Top"><i class="fa-solid fa-arrow-up"></i></button>
+    <nav id="av-nav">
+        <button data-n="home" class="on"><i class="fa-solid fa-house"></i>Home</button>
+        <button data-n="search"><i class="fa-solid fa-magnifying-glass"></i>Search</button>
+        <button data-n="fav"><i class="fa-solid fa-heart"></i>Favorites</button>
+        <button data-n="profile"><i class="fa-solid fa-user"></i>Profile</button>
+    </nav>
+
+    <script>
+        (function() {
+            const $ = s => document.querySelector(s),
+                LS = localStorage;
+            const jget = (k, d) => {
+                try {
+                    return JSON.parse(LS.getItem(k)) ?? d
+                } catch (e) {
+                    return d
+                }
+            };
+            const jset = (k, v) => {
+                try {
+                    LS.setItem(k, JSON.stringify(v))
+                } catch (e) {}
+            };
+
+            /* ---- Toast (alert এর বদলে সুন্দর নোটিফিকেশন) ---- */
+            function toast(msg, ms = 3200) {
+                const t = document.createElement('div');
+                t.className = 'av-toast';
+                const bad = /fail|error|please|বাতিল|rejected|not available/i.test(msg);
+                const ic = document.createElement('i');
+                ic.className = 'fa-solid ' + (bad ? 'fa-circle-exclamation' : 'fa-circle-check');
+                ic.style.color = bad ? '#f59e0b' : '#10b981';
+                const sp = document.createElement('span');
+                sp.textContent = msg;
+                t.append(ic, sp);
+                $('#av-toasts').appendChild(t);
+                setTimeout(() => {
+                    t.classList.add('out');
+                    setTimeout(() => t.remove(), 300)
+                }, ms);
+            }
+            window.alert = m => toast(String(m));
+            window.avToast = toast;
+
+            /* ---- Skeleton loading ---- */
+            const grid = $('#app-grid');
+            if (grid && !grid.children.length) grid.innerHTML = '<div class="sk"></div>'.repeat(6);
+
+            /* ---- Streak (প্রতিদিন আসার অভ্যাস) ---- */
+            const today = new Date().toDateString(),
+                yest = new Date(Date.now() - 864e5).toDateString();
+            let st = jget('av_streak', {
+                last: '',
+                n: 0
+            });
+            if (st.last !== today) {
+                st.n = st.last === yest ? st.n + 1 : 1;
+                st.last = today;
+                jset('av_streak', st);
+                if (st.n > 1) setTimeout(() => toast('🔥 ' + st.n + ' দিনের streak! চালিয়ে যান'), 1500)
+            }
+
+            /* ---- Hero ---- */
+            const home = $('#home-view');
+            const hero = document.createElement('div');
+            hero.className = 'hero';
+            hero.innerHTML = '<small id="hg"></small><h1 id="hn"></h1><p>Premium apps, games, panels & source code — এক জায়গায়।</p><div class="hero-chips"><span id="hs"></span><span id="hc"></span></div>';
+            home.insertBefore(hero, home.firstChild);
+
+            function updateHero() {
+                const h = new Date().getHours();
+                $('#hg').textContent = h < 5 ? '🌙 শুভ রাত্রি' : h < 12 ? '☀️ শুভ সকাল' : h < 17 ? '🌤️ শুভ দুপুর' : h < 20 ? '🌇 শুভ সন্ধ্যা' : '🌙 শুভ রাত্রি';
+                const nm = $('#profile-display-name').textContent;
+                $('#hn').textContent = (typeof currentUser !== 'undefined' && currentUser && nm && nm !== 'My Account') ? nm : 'Welcome to App Vault';
+                $('#hs').textContent = '🔥 ' + st.n + ' day streak';
+                $('#hc').textContent = '📦 ' + (typeof appsData !== 'undefined' ? appsData.length : 0) + ' items';
+            }
+
+            /* ---- Recent searches ---- */
+            const chips = document.createElement('div');
+            chips.className = 'chip-row';
+            home.insertBefore(chips, $('.categories-nav'));
+
+            function renderChips() {
+                const r = jget('av_search', []);
+                chips.style.display = r.length ? 'flex' : 'none';
+                chips.innerHTML = '';
+                if (!r.length) return;
+                const b = document.createElement('b');
+                b.textContent = 'Recent:';
+                chips.appendChild(b);
+                r.forEach(q => {
+                    const c = document.createElement('button');
+                    c.className = 'chip';
+                    c.textContent = q;
+                    c.onclick = () => {
+                        $('#searchInput').value = q;
+                        applySorting()
+                    };
+                    chips.appendChild(c)
+                });
+            }
+            const si = $('#searchInput');
+            si.addEventListener('change', () => {
+                const q = si.value.trim();
+                if (!q) return;
+                let r = jget('av_search', []).filter(x => x !== q);
+                r.unshift(q);
+                jset('av_search', r.slice(0, 6));
+                renderChips()
+            });
+
+            /* ---- Recently viewed ---- */
+            const rec = document.createElement('div');
+            rec.innerHTML = '<h2 class="section-title" style="margin-top:6px">Recently Viewed</h2><div class="recent-row"></div>';
+            home.insertBefore(rec, $('.categories-nav'));
+
+            function renderRecent() {
+                const ids = jget('av_recent', []);
+                const row = rec.querySelector('.recent-row');
+                row.innerHTML = '';
+                const list = ids.map(id => appsData.find(a => a.id === id)).filter(Boolean);
+                rec.style.display = list.length ? 'block' : 'none';
+                list.forEach(a => {
+                    const c = document.createElement('div');
+                    c.className = 'compact-app-card';
+                    const im = document.createElement('img');
+                    im.src = a.iconUrl || '';
+                    im.alt = '';
+                    const w = document.createElement('div');
+                    w.className = 'compact-app-info';
+                    const t = document.createElement('h4');
+                    t.className = 'compact-app-title';
+                    t.textContent = a.title || 'App';
+                    const r = document.createElement('div');
+                    r.className = 'compact-app-rating';
+                    r.textContent = (a.rating ? parseFloat(a.rating).toFixed(1) : '0.0') + ' ★';
+                    w.append(t, r);
+                    c.append(im, w);
+                    c.onclick = () => openAppDetails({
+                        getAttribute: () => a.id
+                    });
+                    row.appendChild(c);
+                });
+            }
+            const _open = window.openAppDetails;
+            window.openAppDetails = function(el) {
+                try {
+                    const id = el.getAttribute('data-id');
+                    let r = jget('av_recent', []).filter(x => x !== id);
+                    r.unshift(id);
+                    jset('av_recent', r.slice(0, 8))
+                } catch (e) {}
+                return _open.apply(this, arguments);
+            };
+
+            /* ---- Share button on details page ---- */
+            new MutationObserver(() => {
+                const box = document.querySelector('#details-container .details-actions');
+                if (!box || box.querySelector('.av-share')) return;
+                const b = document.createElement('button');
+                b.className = 'btn-primary av-share';
+                b.innerHTML = '<i class="fa-solid fa-share-nodes"></i>';
+                b.onclick = async () => {
+                    const title = (document.querySelector('.details-title') || {}).textContent || 'App Vault';
+                    const data = {
+                        title,
+                        text: title + ' — App Vault এ দেখুন',
+                        url: location.href
+                    };
+                    try {
+                        if (navigator.share) await navigator.share(data);
+                        else {
+                            await navigator.clipboard.writeText(location.href);
+                            toast('Link copied!')
+                        }
+                    } catch (e) {}
+                };
+                box.appendChild(b);
+            }).observe($('#details-container'), {
+                childList: true
+            });
+
+            /* ---- Bottom nav ---- */
+            const nav = $('#av-nav');
+
+            function setNav(v) {
+                nav.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.n === (v === 'app-details' ? 'home' : v)))
+            }
+            const _sv = window.switchView;
+            window.switchView = function(v) {
+                _sv(v);
+                setNav(v === 'auth' ? 'profile' : v)
+            };
+            nav.addEventListener('click', e => {
+                const b = e.target.closest('button');
+                if (!b) return;
+                const n = b.dataset.n;
+                if (n === 'home') {
+                    switchView('home');
+                    scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    })
+                } else if (n === 'search') {
+                    switchView('home');
+                    scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                    setTimeout(() => si.focus(), 300)
+                } else if (n === 'fav') {
+                    switchView('profile');
+                    setTimeout(() => {
+                        const t = document.querySelectorAll('.profile-tab-btn')[2];
+                        if (t) switchProfileTab('favorites', t)
+                    }, 50)
+                } else switchView('profile');
+            });
+
+            /* ---- Back to top ---- */
+            const top = $('#av-top');
+            addEventListener('scroll', () => top.classList.toggle('show', scrollY > 500), {
+                passive: true
+            });
+            top.onclick = () => scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+
+            /* ---- Shortcuts, network, system theme ---- */
+            addEventListener('keydown', e => {
+                if (e.key === '/' && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) {
+                    e.preventDefault();
+                    si.focus()
+                }
+            });
+            addEventListener('offline', () => toast('ইন্টারনেট সংযোগ নেই'));
+            addEventListener('online', () => toast('আবার অনলাইনে ফিরে এসেছেন'));
+            if (!LS.getItem('theme') && matchMedia('(prefers-color-scheme: dark)').matches) {
+                try {
+                    DOM.themeBtn.click()
+                } catch (e) {}
+            }
+
+            /* ---- Sync ---- */
+            let last = -1;
+            setInterval(() => {
+                if (typeof appsData !== 'undefined' && appsData.length !== last) {
+                    last = appsData.length;
+                    renderRecent()
+                }
+                updateHero();
+            }, 900);
+            renderChips();
+            renderRecent();
+            updateHero();
+        })();
+    </script>
+    <style>
+        /* ---------- কার্ড ---------- */
+        #profile-view .profile-card {
+            max-width: 680px;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+            margin: 10px auto 30px
+        }
+
+        /* ---------- Cover + Avatar ---------- */
+        #profile-view .profile-identity {
+            position: relative;
+            overflow: hidden;
+            padding: 74px 20px 24px !important;
+            border-radius: 30px;
+            background: var(--surface-color) !important;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 18px !important
+        }
+
+        #profile-view .profile-identity::before {
+            content: "";
+            position: absolute;
+            inset: 0 0 auto 0;
+            height: 124px;
+            background: linear-gradient(120deg, #2563eb, #7c3aed, #ec4899, #f59e0b, #2563eb);
+            background-size: 300% 100%;
+            animation: pfFlow 12s linear infinite
+        }
+
+        #profile-view .profile-identity::after {
+            content: "";
+            position: absolute;
+            inset: 0 0 auto 0;
+            height: 124px;
+            background: radial-gradient(circle at 80% 0%, rgba(255, 255, 255, .35), transparent 45%), radial-gradient(circle at 10% 100%, rgba(0, 0, 0, .22), transparent 50%)
+        }
+
+        @keyframes pfFlow {
+            to {
+                background-position: -300% 0
+            }
+        }
+
+        #profile-view .avatar-upload-wrapper {
+            position: relative;
+            z-index: 2;
+            display: block;
+            width: 108px;
+            margin: 0 auto
+        }
+
+        #profile-view #profile-avatar-img,
+        #profile-view #profile-avatar-icon {
+            width: 108px !important;
+            height: 108px !important;
+            margin: 0 auto 12px !important;
+            border: 4px solid var(--surface-color) !important;
+            box-shadow: 0 0 0 3px #7c3aed, 0 14px 30px -8px rgba(124, 58, 237, .6) !important;
+            font-size: 3.2rem !important;
+            transition: var(--transition)
+        }
+
+        #profile-view .avatar-upload-wrapper:hover #profile-avatar-img,
+        #profile-view .avatar-upload-wrapper:hover #profile-avatar-icon {
+            transform: scale(1.04)
+        }
+
+        #profile-view .avatar-upload-overlay {
+            width: 108px !important;
+            height: 108px !important;
+            top: 0;
+            left: 0;
+            right: 0;
+            margin: 0 auto
+        }
+
+        #profile-view .avatar-upload-wrapper::after {
+            content: "\f030";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            right: 0;
+            bottom: 14px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .8rem;
+            color: #fff;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            border: 3px solid var(--surface-color);
+            box-shadow: var(--shadow-md)
+        }
+
+        #profile-view #profile-display-name {
+            position: relative;
+            z-index: 2;
+            font-size: 1.55rem;
+            letter-spacing: -.5px
+        }
+
+        #profile-view #profile-email {
+            position: relative;
+            z-index: 2;
+            font-size: .9rem
+        }
+
+        #profile-view .profile-status {
+            position: relative;
+            z-index: 2;
+            padding: 5px 12px;
+            border-radius: 999px;
+            background: rgba(16, 185, 129, .12)
+        }
+
+        /* ---------- Level ---------- */
+        .pf-level {
+            position: relative;
+            z-index: 2;
+            margin: 18px auto 0;
+            max-width: 360px;
+            text-align: left;
+            padding: 14px 16px;
+            border-radius: 18px;
+            background: var(--bg-color);
+            border: 1px solid var(--border-color)
+        }
+
+        .pf-level-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: .85rem;
+            font-weight: 700;
+            margin-bottom: 9px
+        }
+
+        .pf-level-top span:last-child {
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: .75rem
+        }
+
+        .pf-bar {
+            height: 8px;
+            border-radius: 99px;
+            background: var(--border-color);
+            overflow: hidden
+        }
+
+        .pf-bar i {
+            display: block;
+            height: 100%;
+            width: 0;
+            border-radius: 99px;
+            background: linear-gradient(90deg, #2563eb, #7c3aed, #ec4899);
+            transition: width 1s cubic-bezier(.2, .8, .2, 1)
+        }
+
+        /* ---------- Stats ---------- */
+        #profile-view .profile-stat-grid {
+            gap: 12px;
+            margin: 0 0 18px
+        }
+
+        #profile-view .profile-stat {
+            position: relative;
+            overflow: hidden;
+            padding: 18px 8px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm)
+        }
+
+        #profile-view .profile-stat:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg)
+        }
+
+        #profile-view .profile-stat::before {
+            content: "";
+            position: absolute;
+            inset: 0 0 auto 0;
+            height: 3px;
+            background: var(--c)
+        }
+
+        #profile-view .profile-stat:nth-child(1) {
+            --c: linear-gradient(90deg, #f59e0b, #ea580c)
+        }
+
+        #profile-view .profile-stat:nth-child(2) {
+            --c: linear-gradient(90deg, #2563eb, #06b6d4)
+        }
+
+        #profile-view .profile-stat:nth-child(3) {
+            --c: linear-gradient(90deg, #ec4899, #ef4444)
+        }
+
+        #profile-view .profile-stat strong {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: var(--c);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent
+        }
+
+        #profile-view .profile-stat span {
+            font-weight: 600;
+            letter-spacing: .3px
+        }
+
+        #profile-view .profile-quick-actions {
+            display: none
+        }
+
+        /* ---------- Settings ---------- */
+        #profile-view .profile-settings {
+            margin: 0 0 20px !important;
+            padding: 6px 18px;
+            border-radius: 24px;
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm)
+        }
+
+        #profile-view .setting-row {
+            padding: 13px 0;
+            transition: var(--transition)
+        }
+
+        #profile-view .setting-row:last-child {
+            border-bottom: none
+        }
+
+        #profile-view .setting-row[onclick]:hover {
+            transform: translateX(4px)
+        }
+
+        #profile-view .setting-row span i:first-child {
+            display: inline-flex !important;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            margin-right: 12px !important;
+            font-size: 1rem;
+            background: color-mix(in srgb, currentColor 14%, transparent)
+        }
+
+        /* ---------- Tabs (segmented) ---------- */
+        #profile-view .profile-tabs {
+            gap: 4px;
+            padding: 5px !important;
+            border: none !important;
+            border-radius: 18px;
+            background: var(--bg-color);
+            margin-top: 0
+        }
+
+        #profile-view .profile-tab-btn {
+            flex: 1;
+            padding: 10px 12px !important;
+            border-radius: 14px;
+            border: none !important;
+            font-size: .82rem
+        }
+
+        #profile-view .profile-tab-btn.active {
+            background: var(--surface-color);
+            color: var(--primary-color);
+            box-shadow: var(--shadow-md)
+        }
+
+        #profile-view .tab-content.active {
+            animation: avIn .4s ease both
+        }
+
+        /* ---------- List items ---------- */
+        #profile-view .history-item {
+            margin-bottom: 10px;
+            padding: 12px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+            background: var(--surface-color);
+            transition: var(--transition)
+        }
+
+        #profile-view .history-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary-color)
+        }
+
+        #profile-view .tab-content>p {
+            padding: 34px 16px;
+            border: 2px dashed var(--border-color);
+            border-radius: 20px;
+            font-size: .9rem
+        }
+
+        /* ---------- Logout ---------- */
+        #profile-view #logout-btn {
+            background: rgba(239, 68, 68, .1) !important;
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, .35);
+            border-radius: 16px;
+            padding: 14px
+        }
+
+        #profile-view #logout-btn:hover {
+            background: #ef4444 !important;
+            color: #fff
+        }
+
+        @media(max-width:480px) {
+            #profile-view .profile-identity {
+                border-radius: 24px
+            }
+
+            #profile-view .profile-stat strong {
+                font-size: 1.5rem
+            }
+
+            #profile-view .profile-tab-btn {
+                font-size: .72rem;
+                padding: 9px 4px !important
+            }
+        }
+    </style>
+
+    <script>
+        (function() {
+            const $ = s => document.querySelector(s);
+            const idt = $('#profile-view .profile-identity');
+            if (!idt) return;
+
+            /* Level / XP কার্ড */
+            const lv = document.createElement('div');
+            lv.className = 'pf-level';
+            lv.innerHTML = '<div class="pf-level-top"><span id="pf-lv"></span><span id="pf-xp"></span></div><div class="pf-bar"><i id="pf-fill"></i></div>';
+            idt.appendChild(lv);
+            const L = [
+                [0, '🌱 Newcomer'],
+                [30, '🧭 Explorer'],
+                [100, '💎 Collector'],
+                [250, '⚡ Pro'],
+                [500, '👑 Legend']
+            ];
+            const n = id => parseInt(($(id) || {}).textContent) || 0;
+
+            function upd() {
+                const xp = n('#profile-download-count') * 10 + n('#profile-purchase-count') * 30 + n('#profile-favorite-count') * 5;
+                let i = 0;
+                while (i < L.length - 1 && xp >= L[i + 1][0]) i++;
+                const cur = L[i][0],
+                    nxt = L[i + 1] ? L[i + 1][0] : cur;
+                $('#pf-lv').textContent = L[i][1];
+                $('#pf-xp').textContent = L[i + 1] ? xp + ' / ' + nxt + ' XP' : xp + ' XP • MAX';
+                $('#pf-fill').style.width = (L[i + 1] ? Math.min(100, (xp - cur) / (nxt - cur) * 100) : 100) + '%';
+            }
+            setInterval(upd, 1000);
+            upd();
+
+            /* স্ট্যাট কার্ডে ট্যাপ করলে ওই ট্যাবে যাবে */
+            document.querySelectorAll('#profile-view .profile-stat').forEach((s, i) => {
+                s.addEventListener('click', () => {
+                    const tabs = ['purchases', 'history', 'favorites'],
+                        btns = document.querySelectorAll('.profile-tab-btn');
+                    if (btns[i] && window.switchProfileTab) switchProfileTab(tabs[i], btns[i]);
+                });
+            });
+        })();
+    </script>
+    <style>
+        /* ---------- Header ---------- */
+        #details-container .details-header {
+            position: relative;
+            overflow: hidden;
+            gap: 26px;
+            padding: 30px;
+            border-radius: 30px;
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 26px
+        }
+
+        .dh-bg {
+            position: absolute;
+            inset: -30px;
+            background-size: cover;
+            background-position: center;
+            filter: blur(38px) saturate(1.5);
+            opacity: .28;
+            pointer-events: none;
+            transform: scale(1.2)
+        }
+
+        #details-container .details-icon-large {
+            width: 156px;
+            height: 156px;
+            border-radius: 32px;
+            border: 3px solid var(--surface-color);
+            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, .4)
+        }
+
+        #details-container .details-title {
+            font-size: 2rem;
+            font-weight: 800;
+            line-height: 1.15
+        }
+
+        #details-container .details-dev {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: .95rem
+        }
+
+        #details-container .details-dev::before {
+            content: "\f058";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            font-size: .8rem;
+            color: var(--premium-color)
+        }
+
+        /* ---------- Stats tiles ---------- */
+        #details-container .details-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            max-width: 420px
+        }
+
+        #details-container .stat-divider {
+            display: none
+        }
+
+        #details-container .stat-item {
+            padding: 12px 6px;
+            border-radius: 16px;
+            background: color-mix(in srgb, var(--surface-color) 75%, transparent);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(8px);
+            transition: var(--transition);
+            text-align: center
+        }
+
+        #details-container .stat-item[onclick]:hover {
+            transform: translateY(-3px);
+            border-color: #f59e0b;
+            box-shadow: var(--shadow-md)
+        }
+
+        #details-container .stat-value {
+            justify-content: center;
+            font-size: 1.15rem;
+            font-weight: 800
+        }
+
+        #details-container .stat-label {
+            font-size: .72rem;
+            font-weight: 600
+        }
+
+        /* ---------- Price + button ---------- */
+        #details-container .details-price-card {
+            padding: 12px 16px;
+            border-radius: 16px;
+            background: color-mix(in srgb, var(--surface-color) 75%, transparent);
+            border: 1px dashed var(--border-color);
+            width: fit-content
+        }
+
+        #details-container .details-price-current {
+            font-size: 1.7rem;
+            background: linear-gradient(135deg, #10b981, #059669);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent
+        }
+
+        #details-container .btn-main-action {
+            position: relative;
+            overflow: hidden;
+            border-radius: 16px;
+            padding: 16px;
+            font-weight: 700;
+            letter-spacing: .2px;
+            box-shadow: 0 14px 28px -10px rgba(37, 99, 235, .65);
+            transition: var(--transition)
+        }
+
+        #details-container .btn-main-action:hover {
+            transform: translateY(-2px)
+        }
+
+        #details-container .btn-main-action:active {
+            transform: scale(.97)
+        }
+
+        #details-container .btn-main-action::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -80%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .4), transparent);
+            transform: skewX(-20deg);
+            animation: cdShine 3.4s 1s ease-in-out infinite
+        }
+
+        #details-container .details-actions>button:not(.btn-main-action) {
+            border-radius: 16px !important;
+            transition: var(--transition)
+        }
+
+        #details-container .details-actions>button:not(.btn-main-action):hover {
+            transform: translateY(-2px);
+            border-color: #ef4444 !important
+        }
+
+        #details-container .download-cta {
+            border-radius: 14px;
+            border-style: solid
+        }
+
+        /* ---------- Section titles ---------- */
+        #details-container .screenshots-section {
+            margin-top: 34px !important
+        }
+
+        #details-container .screenshots-section h3,
+        #details-container .app-description h3 {
+            font-size: 1.2rem;
+            font-weight: 800;
+            letter-spacing: -.3px
+        }
+
+        /* ---------- Screenshots ---------- */
+        #details-container .screenshots-container {
+            gap: 14px;
+            padding: 4px 2px 16px
+        }
+
+        #details-container .screenshot-img {
+            border-radius: 22px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-md);
+            transition: var(--transition)
+        }
+
+        #details-container .screenshot-img:hover {
+            transform: scale(1.025) translateY(-3px);
+            box-shadow: var(--shadow-lg)
+        }
+
+        /* ---------- Description ---------- */
+        #details-container .app-description {
+            position: relative;
+            margin-top: 34px;
+            padding: 26px;
+            border-radius: 24px;
+            box-shadow: var(--shadow-sm);
+            line-height: 1.85;
+            font-size: .95rem
+        }
+
+        #details-container .app-description.clamp {
+            max-height: 300px;
+            overflow: hidden
+        }
+
+        #details-container .app-description.clamp::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 110px;
+            border-radius: 0 0 24px 24px;
+            background: linear-gradient(transparent, var(--surface-color));
+            pointer-events: none
+        }
+
+        .rm-btn {
+            display: block;
+            margin: 14px auto 0;
+            padding: 9px 22px;
+            border-radius: 99px;
+            border: 1px solid var(--primary-color);
+            background: transparent;
+            color: var(--primary-color);
+            font-weight: 700;
+            cursor: pointer;
+            position: relative;
+            z-index: 2;
+            transition: var(--transition)
+        }
+
+        .rm-btn:hover {
+            background: var(--primary-color);
+            color: #fff
+        }
+
+        .app-description.clamp .rm-btn {
+            position: absolute;
+            left: 50%;
+            bottom: 14px;
+            transform: translateX(-50%);
+            margin: 0;
+            background: var(--surface-color)
+        }
+
+        /* ---------- Review summary ---------- */
+        .rv-sum {
+            display: flex;
+            gap: 22px;
+            align-items: center;
+            flex-wrap: wrap;
+            padding: 22px;
+            margin: 4px 0 18px;
+            border-radius: 24px;
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm)
+        }
+
+        .rv-big {
+            text-align: center;
+            min-width: 96px
+        }
+
+        .rv-big b {
+            display: block;
+            font-size: 3rem;
+            line-height: 1;
+            font-weight: 800;
+            background: linear-gradient(135deg, #f59e0b, #ea580c);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent
+        }
+
+        .rv-big div {
+            color: #f59e0b;
+            font-size: .8rem;
+            margin: 6px 0 2px
+        }
+
+        .rv-big small {
+            color: var(--text-secondary);
+            font-size: .75rem
+        }
+
+        .rv-bars {
+            flex: 1;
+            min-width: 170px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px
+        }
+
+        .rv-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: .75rem;
+            color: var(--text-secondary);
+            font-weight: 600
+        }
+
+        .rv-row span:first-child {
+            width: 10px
+        }
+
+        .rv-row i {
+            flex: 1;
+            height: 7px;
+            border-radius: 99px;
+            background: var(--border-color);
+            overflow: hidden;
+            display: block
+        }
+
+        .rv-row i u {
+            display: block;
+            height: 100%;
+            border-radius: 99px;
+            background: linear-gradient(90deg, #f59e0b, #ea580c);
+            text-decoration: none
+        }
+
+        .rv-row span:last-child {
+            width: 22px;
+            text-align: right
+        }
+
+        .rv-write {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            font-weight: 700;
+            color: #fff;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            box-shadow: 0 10px 22px -8px rgba(37, 99, 235, .6);
+            transition: var(--transition)
+        }
+
+        .rv-write:hover {
+            transform: translateY(-2px)
+        }
+
+        /* ---------- Review cards ---------- */
+        #app-reviews-section .review-box {
+            position: relative;
+            padding: 20px;
+            border-radius: 22px;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition)
+        }
+
+        #app-reviews-section .review-box:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary-color)
+        }
+
+        #app-reviews-section .review-box::before {
+            content: "\201C";
+            position: absolute;
+            right: 18px;
+            bottom: -14px;
+            font-family: Georgia, serif;
+            font-size: 6rem;
+            line-height: 1;
+            color: var(--primary-color);
+            opacity: .07;
+            pointer-events: none
+        }
+
+        #app-reviews-section .review-avatar {
+            width: 46px;
+            height: 46px;
+            border: 2px solid var(--surface-color);
+            box-shadow: 0 0 0 2px #7c3aed
+        }
+
+        #app-reviews-section .review-header {
+            gap: 12px;
+            margin-bottom: 12px
+        }
+
+        #app-reviews-section .review-name {
+            font-size: 1rem
+        }
+
+        #app-reviews-section .review-rating {
+            display: flex;
+            gap: 2px;
+            padding: 5px 9px;
+            border-radius: 99px;
+            background: rgba(245, 158, 11, .12)
+        }
+
+        #app-reviews-section .review-text {
+            font-size: .93rem;
+            line-height: 1.7;
+            color: var(--text-primary);
+            opacity: .85;
+            padding-left: 12px;
+            border-left: 3px solid var(--border-color);
+            word-break: break-word
+        }
+
+        #app-reviews-section .review-action-btn {
+            border-radius: 99px;
+            background: var(--bg-color)
+        }
+
+        /* ---------- Similar apps ---------- */
+        #details-container .compact-app-card {
+            border-radius: 18px;
+            padding: 12px
+        }
+
+        #details-container .compact-app-card img {
+            width: 62px;
+            height: 62px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm)
+        }
+
+        /* ---------- Modals (rating + payment + others) ---------- */
+        .custom-modal {
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px)
+        }
+
+        .custom-modal .modal-box {
+            border-radius: 28px;
+            padding: 32px 26px;
+            animation: cdPop .45s cubic-bezier(.34, 1.56, .64, 1) both;
+            border: 1px solid var(--border-color)
+        }
+
+        .close-modal-btn {
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(128, 128, 128, .15);
+            font-size: 1.3rem !important;
+            top: 14px !important;
+            right: 14px !important;
+            transition: var(--transition)
+        }
+
+        .close-modal-btn:hover {
+            transform: rotate(90deg)
+        }
+
+        #rating-modal .stars-container {
+            padding: 6px 0
+        }
+
+        #rating-modal .stars-container i {
+            font-size: 2.5rem;
+            margin: 0 3px;
+            transition: transform .2s, color .2s
+        }
+
+        #rating-modal .stars-container i:hover {
+            transform: scale(1.25) rotate(-8deg)
+        }
+
+        #rt-label {
+            min-height: 24px;
+            margin-top: 6px;
+            font-weight: 700;
+            color: #f59e0b
+        }
+
+        #rating-modal #review-text-input {
+            border-radius: 16px;
+            border-width: 2px
+        }
+
+        #rating-modal #submit-review-btn {
+            border-radius: 14px;
+            padding: 14px
+        }
+
+        #payment-modal .pay-methods {
+            gap: 14px
+        }
+
+        #payment-modal .pay-method {
+            flex: 1;
+            border-radius: 20px;
+            padding: 20px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center
+        }
+
+        #payment-modal .pay-method:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg)
+        }
+
+        .pay-steps {
+            margin: 0 0 16px;
+            padding: 12px 14px;
+            list-style: none;
+            text-align: left;
+            border-radius: 14px;
+            background: rgba(0, 0, 0, .18);
+            font-size: .82rem;
+            line-height: 1.7
+        }
+
+        .pay-steps li::before {
+            content: attr(data-n);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+            border-radius: 50%;
+            background: #fff;
+            color: #333;
+            font-size: .7rem;
+            font-weight: 800
+        }
+
+        #payment-modal .pay-input {
+            border-radius: 14px;
+            padding: 14px;
+            background: rgba(0, 0, 0, .18)
+        }
+
+        #payment-modal #pay-proceed-btn {
+            border-radius: 14px;
+            padding: 14px;
+            font-weight: 800
+        }
+
+        @media(max-width:768px) {
+            #details-container .details-header {
+                padding: 24px 16px;
+                border-radius: 24px
+            }
+
+            #details-container .details-icon-large {
+                width: 128px;
+                height: 128px;
+                border-radius: 28px
+            }
+
+            #details-container .details-title {
+                font-size: 1.55rem
+            }
+
+            #details-container .details-stats {
+                margin-left: auto;
+                margin-right: auto;
+                width: 100%
+            }
+
+            #details-container .details-price-card {
+                margin-left: auto;
+                margin-right: auto
+            }
+
+            #details-container .details-actions {
+                flex-direction: row
+            }
+
+            #details-container .btn-main-action {
+                flex: 1;
+                max-width: none
+            }
+
+            #details-container .app-description {
+                padding: 20px 16px
+            }
+
+            .rv-sum {
+                padding: 18px 14px;
+                gap: 16px
+            }
+        }
+    </style>
+
+    <script>
+        (function() {
+            const dc = document.getElementById('details-container');
+            if (!dc) return;
+
+            /* Header ব্যাকগ্রাউন্ড, Read more, রিভিউ সামারি */
+            function enhance() {
+                const hd = dc.querySelector('.details-header');
+                if (hd && !hd.querySelector('.dh-bg')) {
+                    const img = hd.querySelector('img.details-icon-large');
+                    if (img && img.src) {
+                        const b = document.createElement('div');
+                        b.className = 'dh-bg';
+                        b.style.backgroundImage = 'url("' + img.src.replace(/"/g, '%22') + '")';
+                        hd.prepend(b);
+                    }
+                }
+                const ds = dc.querySelector('.app-description');
+                if (ds && !ds.dataset.rm) {
+                    ds.dataset.rm = '1';
+                    if (ds.scrollHeight > 360) {
+                        ds.classList.add('clamp');
+                        const b = document.createElement('button');
+                        b.className = 'rm-btn';
+                        b.type = 'button';
+                        b.textContent = 'আরও পড়ুন';
+                        b.onclick = () => {
+                            const c = ds.classList.toggle('clamp');
+                            b.textContent = c ? 'আরও পড়ুন' : 'কম দেখুন'
+                        };
+                        ds.appendChild(b);
+                    }
+                }
+                const rs = dc.querySelector('#app-reviews-section');
+                if (rs && !rs.querySelector('.rv-sum') && !rs.textContent.includes('Loading reviews')) {
+                    const boxes = rs.querySelectorAll('.review-box'),
+                        cnt = [0, 0, 0, 0, 0];
+                    let sum = 0,
+                        n = 0;
+                    boxes.forEach(b => {
+                        const s = b.querySelectorAll('.review-rating i.fa-solid').length;
+                        if (s >= 1 && s <= 5) {
+                            cnt[s - 1]++;
+                            sum += s;
+                            n++
+                        }
+                    });
+                    const box = document.createElement('div');
+                    box.className = 'rv-sum';
+                    const writeBtn = '<button class="rv-write" type="button"><i class="fa-solid fa-pen-to-square"></i> রিভিউ লিখুন</button>';
+                    if (n) {
+                        const avg = (sum / n).toFixed(1);
+                        let rows = '';
+                        for (let i = 5; i >= 1; i--) rows += '<div class="rv-row"><span>' + i + '</span><i><u style="width:' + Math.round(cnt[i - 1] / n * 100) + '%"></u></i><span>' + cnt[i - 1] + '</span></div>';
+                        box.innerHTML = '<div class="rv-big"><b>' + avg + '</b><div>' + '<i class="fa-solid fa-star"></i>'.repeat(Math.round(avg)) + '</div><small>' + n + ' টি রিভিউ</small></div><div class="rv-bars">' + rows + '</div>' + writeBtn;
+                    } else {
+                        box.style.justifyContent = 'space-between';
+                        box.innerHTML = '<div><b style="font-size:1.05rem">এখনো কোনো রিভিউ নেই</b><p style="color:var(--text-secondary);font-size:.85rem;margin-top:4px">প্রথম রিভিউটা আপনিই দিন!</p></div>' + writeBtn;
+                    }
+                    box.querySelector('.rv-write').onclick = () => {
+                        const t = dc.querySelector('.stat-item[onclick*="openRatingModal"]');
+                        if (t) t.click()
+                    };
+                    const h = rs.querySelector('h3');
+                    if (h) h.after(box);
+                }
+            }
+            new MutationObserver(() => {
+                enhance();
+                setTimeout(enhance, 150)
+            }).observe(dc, {
+                childList: true,
+                subtree: true
+            });
+
+            /* Rating modal: স্টার অনুযায়ী লেবেল */
+            const stars = document.getElementById('star-rating-ui');
+            if (stars) {
+                const lab = document.createElement('div');
+                lab.id = 'rt-label';
+                stars.after(lab);
+                const T = ['', '😞 খুবই খারাপ', '😕 খারাপ', '😐 ঠিকঠাক', '😊 ভালো', '🤩 দারুণ!'];
+                const sr = window.selectRating;
+                window.selectRating = function(v) {
+                    sr(v);
+                    lab.textContent = T[v] || ''
+                };
+                const op = window.openRatingModal;
+                window.openRatingModal = function() {
+                    const r = op.apply(this, arguments);
+                    lab.textContent = '';
+                    return r
+                };
+            }
+
+            /* Payment modal: ধাপে ধাপে নির্দেশনা */
+            const inp = document.getElementById('pay-inputs');
+            if (inp && !document.querySelector('.pay-steps')) {
+                const ol = document.createElement('ul');
+                ol.className = 'pay-steps';
+                ol.innerHTML = '<li data-n="1">উপরের নম্বরে Send Money করুন</li><li data-n="2">নিজের নম্বর ও TrxID নিচে লিখুন</li><li data-n="3">Verify চাপুন — অ্যাডমিন অ্যাপ্রুভ করলেই ডাউনলোড চালু</li>';
+                inp.before(ol);
+            }
+        })();
+    </script>
 </body>
+
 </html>
